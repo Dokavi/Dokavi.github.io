@@ -16,6 +16,6 @@ function draw() {
 }
 
 function firstObject() {
-  square(60,60,50);
+  square(60,60,300);
   fill("red");
 }
