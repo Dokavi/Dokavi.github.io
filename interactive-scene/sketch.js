@@ -15,12 +15,12 @@ function setup() {
 function draw() {
   background(220);
   firstObject();
-  movingWASD();
 }
 
 function firstObject() {
   square(x,y,300);
   fill("red");
+  movingWASD();
 }
 
 function movingWASD() {
