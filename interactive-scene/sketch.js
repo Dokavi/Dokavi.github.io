@@ -12,8 +12,9 @@ function setup() {
 
 function draw() {
   background(220);
+  firstObject();
 }
 
 function firstObject() {
-  square(60,60,50)
+  square(60,60,50);
 }
