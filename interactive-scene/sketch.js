@@ -15,6 +15,7 @@ function setup() {
 function draw() {
   background(220);
   firstObject();
+  movingWASD()
 }
 
 function firstObject() {
@@ -34,5 +35,5 @@ function movingWASD() {
   } // key W move up
   if (keyIsDown(83)) {
     y +=characterSpeed;
-  } // key S move down
+  } // key S move downw
 }
