@@ -15,7 +15,7 @@ function setup() {
 function draw() {
   background(220);
   firstObject();
-  movingWASD()
+  movingWASD();
 }
 
 function firstObject() {
