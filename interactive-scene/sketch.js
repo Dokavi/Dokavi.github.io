@@ -8,6 +8,7 @@
 let x = 60;
 let y = 60;
 let characterSpeed = 5;
+let characterSize = 100;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 }
@@ -15,12 +16,14 @@ function setup() {
 function draw() {
   background(220);
   firstObject();
+  drawLine();
 }
 
 function firstObject() {
-  square(x,y,300);
+  square(x,y,characterSize);
   fill("red");
   movingWASD();
+  camera2D();
 }
 
 function movingWASD() {
@@ -37,3 +40,16 @@ function movingWASD() {
     y +=characterSpeed;
   } // key S move downw
 }
+
+function drawLine() {
+  beginShape();
+  for (let i=20; i <1000 ;i+=20) {
+    vertex(i,i);
+    vertex(i+20,i+30);
+  }
+  endShape();
+}
+
+function camera2D() {
+  translate(width/2- x, height/2 - y);
+} //center the character
