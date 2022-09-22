@@ -18,4 +18,14 @@ function setup() {
 function draw() {
   background(220);
   image(fishImage,width/2,height/2,fishImage.width*scalar, fishImage.height*scalar);
+  changeScale();
+}
+
+function changeScale() {
+  if (keyIsDown === UP_ARROW) {
+    scalar *= 1.5;
+  }
+  if (keyIsDown === DOWN_ARROW) {
+    scalar *= 0.75;
+  }
 }
