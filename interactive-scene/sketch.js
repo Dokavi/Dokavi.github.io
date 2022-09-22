@@ -11,6 +11,8 @@ let characterSpeed = 5;
 let characterSize = 100;
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  x = width/2 -characterSize;
+  y = height/2 -characterSize;
 }
 
 function draw() {
@@ -51,5 +53,5 @@ function drawLine() {
 }
 
 function camera2D() {
-  translate(width/2- x, height/2 - y);
+  translate(-x,-y);
 } //center the character
