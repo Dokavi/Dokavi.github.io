@@ -9,6 +9,9 @@ let x = 60;
 let y = 60;
 let characterSpeed = 5;
 let characterSize = 100;
+function preload() {
+
+}
 function setup() {
   createCanvas(windowWidth, windowHeight);
   x = width/2 -characterSize;
