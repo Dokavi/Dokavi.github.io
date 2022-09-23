@@ -24,7 +24,7 @@ function setup() {
 function draw() {
   background(220);
   camera2D();
-  drawLine()
+  drawLine();
   firstObject();
 }
 
@@ -32,7 +32,11 @@ function firstObject() {
   square(x,y,characterSize);
   fill("red");
   movingWASD();
+  jumping();
   gravity();
+  if (keyIsDown(32)) {
+    stamina();
+  }
 }
 
 function movingWASD() {
@@ -48,9 +52,6 @@ function movingWASD() {
   if (keyIsDown(83)) {
     y +=characterSpeed;
   } // key S move downw
-  if (keyIsDown(32)) {
-    y -=jump;
-  } //key space jump
 }
 
 function drawLine() {
@@ -78,4 +79,11 @@ function gravity() {
   else if (y >groundCoordinate-characterSize) {
     y = groundCoordinate-characterSize;
   }
+}
+
+
+function jumping() {
+  if (keyIsPressed(32)) {
+    y-=jump;
+  } //key space jump
 }
