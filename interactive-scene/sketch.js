@@ -34,9 +34,6 @@ function firstObject() {
   movingWASD();
   jumping();
   gravity();
-  if (keyIsDown(32)) {
-    stamina();
-  }
 }
 
 function movingWASD() {
@@ -83,7 +80,7 @@ function gravity() {
 
 
 function jumping() {
-  if (keyIsPressed(32)) {
+  if (keyIsDown(32)) {
     y-=jump;
   } //key space jump
 }
