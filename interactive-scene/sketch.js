@@ -9,6 +9,9 @@ let x = 60;
 let y = 60;
 let characterSpeed = 5;
 let characterSize = 100;
+let groundCoordinate = 500;
+let jump = 15;
+let groundLength = 3000;
 function preload() {
 
 }
@@ -20,15 +23,15 @@ function setup() {
 
 function draw() {
   background(220);
+  camera2D();
+  drawLine()
   firstObject();
-  drawLine();
 }
 
 function firstObject() {
   square(x,y,characterSize);
   fill("red");
   movingWASD();
-  camera2D();
   gravity();
 }
 
@@ -45,26 +48,34 @@ function movingWASD() {
   if (keyIsDown(83)) {
     y +=characterSpeed;
   } // key S move downw
+  if (keyIsDown(32)) {
+    y -=jump;
+  } //key space jump
 }
 
 function drawLine() {
   beginShape();
-  for (let i=20; i <1000 ;i+=20) {
-    vertex(i,i);
-    vertex(i+20,i+30);
+  vertex(0,groundCoordinate);
+  vertex(groundLength,groundCoordinate);
+  endShape();
+  beginShape();
+  for (let i=0;i<100;i+=3) {
+    vertex(i*10,300 );
+    vertex((i+1)*10,200 );
+    vertex((i+2)*10,300);
   }
   endShape();
 }
 
 function camera2D() {
-  translate(-x,-y);
+  translate(width/2-x,height/2-y);
 } //center the character
 
 function gravity() {
-  if (y <500) {
-    y -=15;
+  if (y <groundCoordinate-characterSize) {
+    y +=5;
   }
-  else if (y >500) {
-    y =500;
+  else if (y >groundCoordinate-characterSize) {
+    y = groundCoordinate-characterSize;
   }
 }
