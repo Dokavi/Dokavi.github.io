@@ -29,6 +29,7 @@ function firstObject() {
   fill("red");
   movingWASD();
   camera2D();
+  gravity();
 }
 
 function movingWASD() {
@@ -58,3 +59,12 @@ function drawLine() {
 function camera2D() {
   translate(-x,-y);
 } //center the character
+
+function gravity() {
+  if (y <500) {
+    y -=15;
+  }
+  else if (y >500) {
+    y =500;
+  }
+}
