@@ -27,17 +27,17 @@ function movingAroundEdge() {
   if (x>=0 && y <=0 && x<=windowWidth-squareSize) {
     y = 0;
     x+=speed;
-  }
+  } //right state
   else if (x>=windowWidth-squareSize && y>=0 && y<=windowHeight-squareSize) {
     x = windowWidth - squareSize;
     y+=speed;
-  }
+  } // down state
   else if (x<=windowWidth-squareSize && y>=windowHeight-squareSize && x>=0) {
     y = windowHeight - squareSize;
     x-=speed;
-  }
+  } //left state
   else if (x<=0 && y<=windowHeight-squareSize && y>=0) {
     x = 0;
     y-=speed;
-  }
+  } //up state
 }
