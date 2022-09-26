@@ -10,7 +10,7 @@ let y = 60;
 let characterSpeed = 5;
 let characterSize = 100;
 let groundCoordinate = 500;
-let jump = 15;
+let jump = 20;
 let groundLength = 3000;
 let jumpButton = true;
 function preload() {
@@ -72,7 +72,7 @@ function camera2D() {
 
 function gravity() {
   if (y <groundCoordinate-characterSize) {
-    y +=5;
+    y +=15;
   }
   else if (y >groundCoordinate-characterSize) {
     y = groundCoordinate-characterSize;
@@ -81,13 +81,24 @@ function gravity() {
 
 
 function jumping() {
-  if (keyIsDown(32)) {
+  if (keyIsDown(32) && jumpButton) {
     y-=jump;
+    jumpTimer();
   } //key space jump
+  jumpAllow();
 }
 
 function jumpTimer() {
-  setInterval(function(){
-    jumpButton = false,2000;
-  });
+  setTimeout(function(){
+    jumpButton = false;
+  },2000
+  );
+}
+
+function jumpAllow() {
+  if (y<=groundCoordinate-characterSize && jumpButton === false) {
+    setTimeout(function(){
+      jumpButton = true;
+    },2000);
+  }
 }
