@@ -12,6 +12,7 @@ let characterSize = 100;
 let groundCoordinate = 500;
 let jump = 15;
 let groundLength = 3000;
+let jumpButton = true;
 function preload() {
 
 }
@@ -83,4 +84,10 @@ function jumping() {
   if (keyIsDown(32)) {
     y-=jump;
   } //key space jump
+}
+
+function jumpTimer() {
+  setInterval(function(){
+    jumpButton = false,2000;
+  });
 }
