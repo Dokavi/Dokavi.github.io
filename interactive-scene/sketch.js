@@ -10,9 +10,10 @@ let y = 60;
 let characterSpeed = 5;
 let characterSize = 100;
 let groundCoordinate = 500;
-let jump = 20;
+let jump = 10;
 let groundLength = 3000;
-let jumpButton = true;
+let jumpHoldButton = true;
+let jumpBooleans = true;
 function preload() {
 
 }
@@ -27,6 +28,7 @@ function draw() {
   camera2D();
   drawLine();
   firstObject();
+  keyPressed();
 }
 
 function firstObject() {
@@ -44,9 +46,6 @@ function movingWASD() {
   if (keyIsDown(68)) {
     x +=characterSpeed;
   } // key D move right
-  if (keyIsDown(87)) {
-    y -=characterSpeed;
-  } // key W move up
   if (keyIsDown(83)) {
     y +=characterSpeed;
   } // key S move downw
@@ -72,7 +71,7 @@ function camera2D() {
 
 function gravity() {
   if (y <groundCoordinate-characterSize) {
-    y +=15;
+    y +=8;
   }
   else if (y >groundCoordinate-characterSize) {
     y = groundCoordinate-characterSize;
@@ -81,24 +80,35 @@ function gravity() {
 
 
 function jumping() {
-  if (keyIsDown(32) && jumpButton) {
+  if (keyIsDown(32) && jumpHoldButton && jumpBooleans) {
     y-=jump;
     jumpTimer();
-  } //key space jump
+  } //key space jumplong
   jumpAllow();
 }
 
 function jumpTimer() {
   setTimeout(function(){
-    jumpButton = false;
-  },2000
+    jumpHoldButton = false;
+  },750
   );
 }
 
 function jumpAllow() {
-  if (y<=groundCoordinate-characterSize && jumpButton === false) {
+  if (y<=groundCoordinate-characterSize && jumpHoldButton === false) {
     setTimeout(function(){
-      jumpButton = true;
-    },2000);
+      jumpHoldButton = true;
+    },2500);
+  }
+  if (jumpBooleans === true) {
+    setTimeout(function() {
+      jumpBooleans =false; 
+    },2500);
   }
 }
+
+function keyPressed() {
+  if (keyCode === 32 && jumpHoldButton && jumpBooleans) {
+    y -=15;
+  }
+}//key space jump short
