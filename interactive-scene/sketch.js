@@ -5,22 +5,11 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let x = 60;
-let y = 60;
-let characterSpeed = 5;
-let characterSize = 100;
-let groundCoordinate = 500;
-let jump = 10;
-let groundLength = 3000;
-let jumpHoldButton = true;
-let jumpBooleans = true;
-function preload() {
 
-}
+let groundCoordinate = 500;
+let groundLength = 3000;
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  x = width/2 -characterSize;
-  y = height/2 -characterSize;
 }
 
 function draw() {
@@ -31,24 +20,45 @@ function draw() {
   keyPressed();
 }
 
+class character {
+  constructor() {
+    this.x = 60;
+    this.y = 60;
+    this.characterSpeed = 5;
+    this.characterSize = 100;
+    this.jump = 10;
+    this.jumpHoldButton = true;
+    this.jumpBooleans = true;
+    this.characterColor = "red";
+  }
+  createCharacter() {
+    fill("characterColor");
+    square(this.x, this.y,this.characterSize);
+    fill(255);
+  }
+  movingWASD() {
+    if (keyIsDown(65)) {
+      this.x -=this.characterSpeed;
+    } // key A move left
+    if (keyIsDown(68)) {
+      this.x +=this.characterSpeed;
+    } // key D move right
+    if (keyIsDown(83)) {
+      this.y +=this.characterSpeed;
+    } // key S move down
+  }
+  camera2D() {
+    translate(width/2-this.x,height/2-this.y);
+  }
+}
+
 function firstObject() {
   square(x,y,characterSize);
   fill("red");
-  movingWASD();
-  jumping();
-  gravity();
 }
 
 function movingWASD() {
-  if (keyIsDown(65)) {
-    x -=characterSpeed;
-  } // key A move left
-  if (keyIsDown(68)) {
-    x +=characterSpeed;
-  } // key D move right
-  if (keyIsDown(83)) {
-    y +=characterSpeed;
-  } // key S move downw
+  translate(width/2-x,height/2-y);
 }
 
 function drawLine() {
@@ -65,9 +75,6 @@ function drawLine() {
   endShape();
 }
 
-function camera2D() {
-  translate(width/2-x,height/2-y);
-} //center the character
 
 function gravity() {
   if (y <groundCoordinate-characterSize) {
