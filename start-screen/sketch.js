@@ -38,6 +38,9 @@ function startScreen(){
     fill("black");
   }
   rect(400,400, 300, 150);
+  fill("white");
+  textSize(50);
+  text("START",480,490);
 }
 
 function mouseInsideRect(left,right,top,bottom) {

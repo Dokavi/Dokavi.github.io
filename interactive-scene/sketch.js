@@ -9,6 +9,7 @@
 let groundCoordinate = 500;
 let groundLength = 3000;
 let character1;
+let state = "start";
 function setup() {
   createCanvas(windowWidth, windowHeight);
   character1 = new character();
@@ -16,6 +17,7 @@ function setup() {
 
 function draw() {
   background(220);
+  if (state === "start")
   drawLine();
   character1.createCharacter();
   character1.movingWASD();
