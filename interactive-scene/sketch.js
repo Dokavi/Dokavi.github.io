@@ -8,16 +8,22 @@
 
 let groundCoordinate = 500;
 let groundLength = 3000;
+let character1;
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  character1 = new character();
 }
 
 function draw() {
   background(220);
-  camera2D();
   drawLine();
-  firstObject();
-  keyPressed();
+  character1.createCharacter();
+  character1.movingWASD();
+  character1.camera2D();
+  character1.gravity();
+  character1.jumpHoldButton();
+  character1.jumpAllow();
+  character1.jumping();
 }
 
 class character {
@@ -32,9 +38,8 @@ class character {
     this.characterColor = "red";
   }
   createCharacter() {
-    fill("characterColor");
     square(this.x, this.y,this.characterSize);
-    fill(255);
+    fill(this.characterColor);
   }
   movingWASD() {
     if (keyIsDown(65)) {
@@ -50,15 +55,33 @@ class character {
   camera2D() {
     translate(width/2-this.x,height/2-this.y);
   }
-}
-
-function firstObject() {
-  square(x,y,characterSize);
-  fill("red");
-}
-
-function movingWASD() {
-  translate(width/2-x,height/2-y);
+  gravity() {
+    if (this.y <groundCoordinate-this.characterSize) {
+      this.y +=8;
+    }
+    else if (this.y >groundCoordinate-this.characterSize) {
+      this.y = groundCoordinate-this.characterSize;
+    }
+  }
+  jumping() {
+    if (keyIsDown(32) && this.jumpHoldButton && this.jumpBooleans) {
+      this.y-=this.jump;
+      this.jumpTimer();
+    } //key space jumplong
+  }
+  jumpTimer() {
+    setTimeout(function(){
+      this.jumpHoldButton = false;
+    },750
+    );
+  }
+  jumpAllow() {
+    if (this.y<=groundCoordinate-this.characterSize && this.jumpHoldButton === false) {
+      setTimeout(function(){
+        this.jumpHoldButton = true;
+      },2500);
+    }
+  }
 }
 
 function drawLine() {
@@ -75,47 +98,3 @@ function drawLine() {
   endShape();
 }
 
-
-function gravity() {
-  if (y <groundCoordinate-characterSize) {
-    y +=8;
-  }
-  else if (y >groundCoordinate-characterSize) {
-    y = groundCoordinate-characterSize;
-  }
-}
-
-
-function jumping() {
-  if (keyIsDown(32) && jumpHoldButton && jumpBooleans) {
-    y-=jump;
-    jumpTimer();
-  } //key space jumplong
-  jumpAllow();
-}
-
-function jumpTimer() {
-  setTimeout(function(){
-    jumpHoldButton = false;
-  },750
-  );
-}
-
-function jumpAllow() {
-  if (y<=groundCoordinate-characterSize && jumpHoldButton === false) {
-    setTimeout(function(){
-      jumpHoldButton = true;
-    },2500);
-  }
-  if (jumpBooleans === true) {
-    setTimeout(function() {
-      jumpBooleans =false; 
-    },2500);
-  }
-}
-
-function keyPressed() {
-  if (keyCode === 32 && jumpHoldButton && jumpBooleans) {
-    y -=15;
-  }
-}//key space jump short
