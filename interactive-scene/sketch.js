@@ -21,9 +21,6 @@ function draw() {
   character1.movingWASD();
   character1.camera2D();
   character1.gravity();
-  character1.jumpHoldButton();
-  character1.jumpAllow();
-  character1.jumping();
 }
 
 class character {
@@ -32,9 +29,6 @@ class character {
     this.y = 60;
     this.characterSpeed = 5;
     this.characterSize = 100;
-    this.jump = 10;
-    this.jumpHoldButton = true;
-    this.jumpBooleans = true;
     this.characterColor = "red";
   }
   createCharacter() {
@@ -61,25 +55,6 @@ class character {
     }
     else if (this.y >groundCoordinate-this.characterSize) {
       this.y = groundCoordinate-this.characterSize;
-    }
-  }
-  jumping() {
-    if (keyIsDown(32) && this.jumpHoldButton && this.jumpBooleans) {
-      this.y-=this.jump;
-      this.jumpTimer();
-    } //key space jumplong
-  }
-  jumpTimer() {
-    setTimeout(function(){
-      this.jumpHoldButton = false;
-    },750
-    );
-  }
-  jumpAllow() {
-    if (this.y<=groundCoordinate-this.characterSize && this.jumpHoldButton === false) {
-      setTimeout(function(){
-        this.jumpHoldButton = true;
-      },2500);
     }
   }
 }
