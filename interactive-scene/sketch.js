@@ -10,19 +10,26 @@ let groundCoordinate = 500;
 let groundLength = 3000;
 let character1;
 let state = "start";
+let halfW,halfH;
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  halfW = width/2;
+  halfH = height/2;
   character1 = new character();
 }
 
 function draw() {
   background(220);
-  if (state === "start")
-  drawLine();
-  character1.createCharacter();
-  character1.movingWASD();
-  character1.camera2D();
-  character1.gravity();
+  if (state === "start") {
+    menuScreen();
+  }
+  else if (state === "createCharacter") {
+    drawLine();
+    character1.createCharacter();
+    character1.movingWASD();
+    character1.camera2D();
+    character1.gravity();
+  }
 }
 
 class character {
@@ -75,3 +82,25 @@ function drawLine() {
   endShape();
 }
 
+function mousePressed() {
+  if (state === "start" && startButton()) {
+    state = "createCharacter";
+  }
+}
+function startButton(left,right,top,bottom) {
+  return mouseX>= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
+}
+
+function menuScreen() {
+  if (startButton(halfW, halfW+halfW*0.4, halfH, halfH+halfH*0.4)) {
+    fill ("gray");
+  }
+  else {
+    fill("black");
+  }
+  rectMode(CENTER);
+  rect(halfW,halfH, halfW*0.4, halfH*0.4);
+  fill("white");
+  textSize(50);
+  text("PLAY",halfW,halfH);
+}
