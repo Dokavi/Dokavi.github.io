@@ -83,7 +83,7 @@ function drawLine() {
 }
 
 function mousePressed() {
-  if (state === "start" && startButton()) {
+  if (state === "start" && startButton(CenterW-CenterW*0.2, CenterW+CenterW*0.2, CenterH-CenterH*0.2, CenterH+CenterH*0.2)) {
     state = "main";
   }
 }
