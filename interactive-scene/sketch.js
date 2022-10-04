@@ -10,11 +10,11 @@ let groundCoordinate = 500;
 let groundLength = 3000;
 let character1;
 let state = "start";
-let halfW,halfH;
+let CenterW,CenterH;
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  halfW = width/2;
-  halfH = height/2;
+  CenterW = width/2;
+  CenterH = height/2;
   character1 = new character();
 }
 
@@ -23,7 +23,7 @@ function draw() {
   if (state === "start") {
     menuScreen();
   }
-  else if (state === "createCharacter") {
+  else if (state === "main") {
     drawLine();
     character1.createCharacter();
     character1.movingWASD();
@@ -84,7 +84,7 @@ function drawLine() {
 
 function mousePressed() {
   if (state === "start" && startButton()) {
-    state = "createCharacter";
+    state = "main";
   }
 }
 function startButton(left,right,top,bottom) {
@@ -92,15 +92,15 @@ function startButton(left,right,top,bottom) {
 }
 
 function menuScreen() {
-  if (startButton(halfW, halfW+halfW*0.4, halfH, halfH+halfH*0.4)) {
+  if (startButton(CenterW-CenterW*0.2, CenterW+CenterW*0.2, CenterH-CenterH*0.2, CenterH+CenterH*0.2)) {
     fill ("gray");
   }
   else {
     fill("black");
   }
   rectMode(CENTER);
-  rect(halfW,halfH, halfW*0.4, halfH*0.4);
+  rect(CenterW,CenterH, CenterW*0.4, CenterH*0.4);
   fill("white");
   textSize(50);
-  text("PLAY",halfW,halfH);
+  text("PLAY",CenterW-CenterW*0.08,CenterH);
 }
