@@ -93,7 +93,7 @@ function mousePressed() {
     state = "createCharacter";
   }
   //character
-  if (state === "createCharacter" && chooseRed) {
+  else if (state === "createCharacter" && chooseRed) {
     state = "main"; tempColor = "red";
   }
   else if (state === "createCharacter" && chooseGreen) {
@@ -129,15 +129,15 @@ function chooseCharacter() {
   fill(220);
   if (chooseRed()){
     fill("red");
-    rect(0,0,width/3,height);
+    rect(0,0,windowWidth,windowHeight);
   }
   else if (chooseGreen) {
     fill("green");
-    rect(0,0,width/3,height);
+    rect(width/3,0,width/3*2,height);
   }
   else if (chooseBlue) {
     fill("blue");
-    rect(0,0,width/3,height);
+    rect(width/3*2,0,width,height);
   }
   
 }
