@@ -5,40 +5,46 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-
+let r = false;
+let g = false;
+let b = false;
 let groundCoordinate = 500;
 let groundLength = 3000;
 let character1;
 let state = "start";
 let CenterW,CenterH;
+let tempColor = "red";
 function setup() {
   createCanvas(windowWidth, windowHeight);
   CenterW = width/2;
   CenterH = height/2;
-  character1 = new character();
+  character1 = new character(tempColor);
 }
 
 function draw() {
   background(220);
-  // if (state === "start") {
-  //   menuScreen();
-  // }
-  // else if (state === "main") {
+  if (state === "start") {
+    menuScreen();
+  }
+  else if (state === "createCharacter") {
+    chooseCharacter();
+  }
+  else if (state === "main") {
+    character1.camera2D();
     drawLine();
     character1.createCharacter();
     character1.movingWASD();
     character1.gravity();
-    character1.camera2D();
-  // }
+  }
 }
 
 class character {
-  constructor() {
+  constructor(tempColor) {
     this.x = 60;
     this.y = 60;
     this.characterSpeed = 5;
     this.characterSize = 100;
-    this.characterColor = "red";
+    this.characterColor = tempColor;
   }
   createCharacter() {
     square(this.x, this.y,this.characterSize);
@@ -84,10 +90,22 @@ function drawLine() {
 
 function mousePressed() {
   if (state === "start" && startButton(CenterW-CenterW*0.2, CenterW+CenterW*0.2, CenterH-CenterH*0.2, CenterH+CenterH*0.2)) {
-    state = "main";
+    state = "createCharacter";
   }
+  //character
+  if (state === "createCharacter" && chooseRed) {
+    state = "main"; tempColor = "red";
+  }
+  else if (state === "createCharacter" && chooseGreen) {
+    state = "main"; tempColor = "green";
+  }
+  else if  (state === "createCharacter" && chooseBlue) {
+    state = "main"; tempColor = "blue";
+  }
+  //play
 }
 
+//MenuScreen
 function startButton(left,right,top,bottom) {
   return mouseX>= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
 }
@@ -104,4 +122,32 @@ function menuScreen() {
   fill("white");
   textSize(50);
   text("PLAY",CenterW-CenterW*0.08,CenterH);
+}
+//Character creation Screen
+
+function chooseCharacter() {
+  fill(220);
+  if (chooseRed()){
+    fill("red");
+    rect(0,0,width/3,height);
+  }
+  else if (chooseGreen) {
+    fill("green");
+    rect(0,0,width/3,height);
+  }
+  else if (chooseBlue) {
+    fill("blue");
+    rect(0,0,width/3,height);
+  }
+  
+}
+
+function chooseRed() {
+  return mouseX>= 0 && mouseX <= width/3 && mouseY >= 0 && mouseY <= height && state === "createCharacter";
+}
+function chooseGreen() {
+  return mouseX>= width/3 && mouseX <= 2*width/3 && mouseY >= 0 && mouseY <= height && state === "createCharacter";
+}
+function chooseBlue() {
+  return mouseX>= 2*width/3 && mouseX <= width && mouseY >= 0 && mouseY <= height && state === "createCharacter";
 }
