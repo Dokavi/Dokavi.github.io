@@ -20,16 +20,16 @@ function setup() {
 
 function draw() {
   background(220);
-  if (state === "start") {
-    menuScreen();
-  }
-  else if (state === "main") {
+  // if (state === "start") {
+  //   menuScreen();
+  // }
+  // else if (state === "main") {
     drawLine();
     character1.createCharacter();
     character1.movingWASD();
-    character1.camera2D();
     character1.gravity();
-  }
+    character1.camera2D();
+  // }
 }
 
 class character {
@@ -87,6 +87,7 @@ function mousePressed() {
     state = "main";
   }
 }
+
 function startButton(left,right,top,bottom) {
   return mouseX>= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
 }
