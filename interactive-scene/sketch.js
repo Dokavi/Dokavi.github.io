@@ -12,17 +12,18 @@ let groundCoordinate = 500;
 let groundLength = 3000;
 let character1;
 let state = "start";
+let tempColor = "white";
 let CenterW,CenterH;
-let tempColor = "red";
+let button = false;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   CenterW = width/2;
   CenterH = height/2;
-  character1 = new character(tempColor);
+  character1 = new character();
 }
 
 function draw() {
-  background(220);
+  background(100);
   if (state === "start") {
     menuScreen();
   }
@@ -32,23 +33,25 @@ function draw() {
   else if (state === "main") {
     character1.camera2D();
     drawLine();
+    character1.characterColor = tempColor;
     character1.createCharacter();
     character1.movingWASD();
     character1.gravity();
+    character1.jump();
   }
 }
 
 class character {
-  constructor(tempColor) {
+  constructor() {
     this.x = 60;
     this.y = 60;
     this.characterSpeed = 5;
     this.characterSize = 100;
-    this.characterColor = tempColor;
+    this.characterColor = "white";
   }
   createCharacter() {
-    square(this.x, this.y,this.characterSize);
     fill(this.characterColor);
+    square(this.x, this.y,this.characterSize);
   }
   movingWASD() {
     if (keyIsDown(65)) {
@@ -72,6 +75,11 @@ class character {
       this.y = groundCoordinate-this.characterSize;
     }
   }
+  jump() {
+    if (keyIsDown(32) && button) {
+      this.y-=12;
+    }
+  }
 }
 
 function drawLine() {
@@ -80,6 +88,7 @@ function drawLine() {
   vertex(groundLength,groundCoordinate);
   endShape();
   beginShape();
+  fill(0);
   for (let i=0;i<100;i+=3) {
     vertex(i*10,300 );
     vertex((i+1)*10,200 );
@@ -93,13 +102,13 @@ function mousePressed() {
     state = "createCharacter";
   }
   //character
-  else if (state === "createCharacter" && chooseRed) {
+  else if (state === "createCharacter" && chooseRed()) {
     state = "main"; tempColor = "red";
   }
-  else if (state === "createCharacter" && chooseGreen) {
+  else if (state === "createCharacter" && chooseGreen()) {
     state = "main"; tempColor = "green";
   }
-  else if  (state === "createCharacter" && chooseBlue) {
+  else if  (state === "createCharacter" && chooseBlue()) {
     state = "main"; tempColor = "blue";
   }
   //play
@@ -127,27 +136,30 @@ function menuScreen() {
 
 function chooseCharacter() {
   fill(220);
+  rectMode(CORNER);
   if (chooseRed()){
     fill("red");
-    rect(0,0,windowWidth,windowHeight);
+    square(0,0,width/3);
   }
-  else if (chooseGreen) {
+
+  else if (chooseGreen()) {
     fill("green");
-    rect(width/3,0,width/3*2,height);
+    square(width/3,0,width/3);
   }
-  else if (chooseBlue) {
+
+  else if (chooseBlue()) {
     fill("blue");
-    rect(width/3*2,0,width,height);
+    square(width/3*2,0,width/3);
   }
   
 }
 
 function chooseRed() {
-  return mouseX>= 0 && mouseX <= width/3 && mouseY >= 0 && mouseY <= height && state === "createCharacter";
+  return mouseX>= 0 && mouseX <= width/3 && state === "createCharacter";
 }
 function chooseGreen() {
-  return mouseX>= width/3 && mouseX <= 2*width/3 && mouseY >= 0 && mouseY <= height && state === "createCharacter";
+  return mouseX <= 2*width/3 && state === "createCharacter";
 }
 function chooseBlue() {
-  return mouseX>= 2*width/3 && mouseX <= width && mouseY >= 0 && mouseY <= height && state === "createCharacter";
+  return mouseX<=width && state === "createCharacter";
 }
