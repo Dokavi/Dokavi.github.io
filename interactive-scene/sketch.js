@@ -10,16 +10,17 @@ let g = false;
 let b = false;
 let groundCoordinate = 500;
 let groundLength = 3000;
-let character1;
+let character1,block1;
 let state = "start";
 let tempColor = "white";
 let CenterW,CenterH;
-let button = false;
+let button;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   CenterW = width/2;
   CenterH = height/2;
   character1 = new character();
+  block1 = new ground(0,300,500,30);
 }
 
 function draw() {
@@ -38,6 +39,7 @@ function draw() {
     character1.movingWASD();
     character1.gravity();
     character1.jump();
+    block1.create();
   }
 }
 
@@ -76,9 +78,26 @@ class character {
     }
   }
   jump() {
-    if (keyIsDown(32) && button) {
+    if (keyIsDown(32)) {
       this.y-=12;
     }
+  }
+}
+
+class ground {
+  constructor(tempX,tempY,tempLength,tempHeight) {
+    this.x = tempX;
+    this.y = tempY;
+    this.length = tempLength;
+    this.height = tempHeight;
+    this.speed = 10;
+  }
+  create() {
+    fill("green");
+    rect(this.x,this.y,this.length,this.width);
+  }
+  moving() {
+    this.x += this.speed;
   }
 }
 
