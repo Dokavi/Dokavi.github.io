@@ -8,9 +8,10 @@
 let r = false;
 let g = false;
 let b = false;
-let groundCoordinate = 500;
+let groundCoordinate = 300;
 let groundLength = 3000;
-let character1,block1;
+let character1;
+let blocks = [];
 let state = "start";
 let tempColor = "white";
 let CenterW,CenterH;
@@ -20,7 +21,7 @@ function setup() {
   CenterW = width/2;
   CenterH = height/2;
   character1 = new character();
-  block1 = new ground(0,300,500,30);
+  blocks[0] = new ground(0,groundCoordinate,groundLength,300);
 }
 
 function draw() {
@@ -37,64 +38,38 @@ function draw() {
     character1.characterColor = tempColor;
     character1.createCharacter();
     character1.movingWASD();
-    character1.gravity();
-    character1.jump();
-    block1.create();
+    character1.gravity(groundCoordinate);
+    blocks[0].create();
   }
 }
 
-class character {
+class enemies {
   constructor() {
-    this.x = 60;
-    this.y = 60;
-    this.characterSpeed = 5;
-    this.characterSize = 100;
-    this.characterColor = "white";
+    this.x = 0;
+    this.y = 0;
+    this.xSpeed = 5;
+    this.size = 30;
+    this.color = "purple";
+    this.ySpeed = 0;
   }
-  createCharacter() {
-    fill(this.characterColor);
-    square(this.x, this.y,this.characterSize);
-  }
-  movingWASD() {
-    if (keyIsDown(65)) {
-      this.x -=this.characterSpeed;
-    } // key A move left
-    if (keyIsDown(68)) {
-      this.x +=this.characterSpeed;
-    } // key D move right
-    if (keyIsDown(83)) {
-      this.y +=this.characterSpeed;
-    } // key S move down
-  }
-  camera2D() {
-    translate(width/2-this.x,height/2-this.y);
-  }
-  gravity() {
-    if (this.y <groundCoordinate-this.characterSize) {
-      this.y +=8;
-    }
-    else if (this.y >groundCoordinate-this.characterSize) {
-      this.y = groundCoordinate-this.characterSize;
-    }
-  }
-  jump() {
-    if (keyIsDown(32)) {
-      this.y-=12;
-    }
+  create() {
+    fill(this.color);
+    circle(this.x,this.y,size);
   }
 }
 
 class ground {
-  constructor(tempX,tempY,tempLength,tempHeight) {
+  constructor(tempX,tempY,tempLength,tempHeight,tempColor = "darkgreen") {
     this.x = tempX;
     this.y = tempY;
     this.length = tempLength;
     this.height = tempHeight;
     this.speed = 10;
+    this.color = tempColor;
   }
   create() {
-    fill("green");
-    rect(this.x,this.y,this.length,this.width);
+    fill(this.color);
+    rect(this.x,this.y,this.length,this.height);
   }
   moving() {
     this.x += this.speed;
@@ -114,6 +89,12 @@ function drawLine() {
     vertex((i+2)*10,300);
   }
   endShape();
+}
+
+function keyTyped() {
+  if (key === "w") {
+    character1.jump();
+  }
 }
 
 function mousePressed() {
