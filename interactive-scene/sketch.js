@@ -10,9 +10,12 @@ let g = false;
 let b = false;
 let groundCoordinate = 300;
 let groundLength = 3000;
+let shot;
 let character1;
-let a;
+let a; 
+let aProp = [500,0,75];
 let blocks = [];
+let b0 = [0,groundCoordinate,groundLength,300];
 let state = "start";
 let tempColor = "white";
 let CenterW,CenterH;
@@ -23,8 +26,9 @@ function setup() {
   CenterW = width/2;
   CenterH = height/2;
   character1 = new character();
-  blocks[0] = new ground(0,groundCoordinate,groundLength,300);
-  a = new enemies();
+  blocks[0] = new ground(b0[0],b0[1],b0[2],b0[3]);
+  a = new enemies(aProp[0],aProp[1],aProp[2]);
+  shot = new bullets();
 }
 
 function draw() {
@@ -46,49 +50,28 @@ function draw() {
     a.create();
     a.moving(character1.x);
     a.gravity(groundCoordinate);
-    hit = collideRectCircle(character1.x,character1.y,character1.characterSize,character1.characterSize,a.x,a.y,a.size);
     hitbox();
   }
   else if (state === "lose") {
     loseScreen();
-    setTimeout(function(){
-      state = "start";
-      hit = false;
-      
-    },3000);
+    restart();
   }
 }
 
-class enemies {
-  constructor() {
-    this.x = 500;
-    this.y = 0;
-    this.xSpeed = 0.5;
-    this.size = 100;
-    this.color = "purple";
-    this.ySpeed = 0;
+class bullets {
+  constructor(tempX,tempY,tempSize,tempSpeed,tempColor = "white") {
+    this.x = tempX;
+    this.y = tempY;
+    this.size = tempSize;
+    this.xSpeed = tempSpeed;
+    this.color = tempColor;
   }
   create() {
-    fill(this.color);
+    fill(tempColor);
     circle(this.x,this.y,this.size);
   }
-  moving(characterx) {
-    if (this.x<= characterx) {
-      this.x+= this.xSpeed;
-    }
-    else if (this.x >= characterx) {
-      this.x -= this.xSpeed;
-    }
-    this.y += this.ySpeed;
-  }
-  gravity(groundCoordinate) {
-    if (this.y <groundCoordinate-this.size/2) {
-      this.ySpeed += 1;
-    }
-    else if (this.y >=groundCoordinate-this.size/2) {
-      this.ySpeed = 0;
-      this.y = groundCoordinate-this.size/2;
-    }
+  moving() {
+    this.x = this.xSpeed;
   }
 }
 
@@ -109,8 +92,23 @@ class ground {
     this.x += this.speed;
   }
 }
+class flag {
+  constructor(tempX,tempY,tempLength,tempHeight) {
+    this.x = tempX;
+    this.y = tempY;
+    this.length = tempLength;
+    this.height = tempHeight;
+  }
+  create() {
+
+  }
+  victory() {
+    
+  }
+}
 
 function hitbox() {
+  hit = collideRectCircle(character1.x,character1.y,character1.characterSize,character1.characterSize,a.x,a.y,a.size);
   if (hit) {
     state = "lose";
   }
@@ -138,6 +136,8 @@ function keyTyped() {
 }
 
 function mousePressed() {
+  console.log(mouseX,mouseY);
+  //checkcoordinate
   if (state === "start" && startButton(CenterW-CenterW*0.2, CenterW+CenterW*0.2, CenterH-CenterH*0.2, CenterH+CenterH*0.2)) {
     state = "createCharacter";
   }
@@ -209,4 +209,15 @@ function loseScreen() {
   fill("red");
   textSize(200);
   text("YOU DIED",CenterW-CenterW*0.6,CenterH);
+}
+
+function restart() {
+  setTimeout(function(){
+    state = "start";
+    hit = false;
+    character1.x = 0;
+    character1.y = 0;
+    a.x = 500;
+    a.y = 0;
+  },3000);
 }
