@@ -54,6 +54,7 @@ function draw() {
     setTimeout(function(){
       state = "start";
       hit = false;
+      
     },3000);
   }
 }
