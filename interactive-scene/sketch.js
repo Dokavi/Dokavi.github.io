@@ -17,6 +17,7 @@ let state = "start";
 let tempColor = "white";
 let CenterW,CenterH;
 let button;
+let hit = false;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   CenterW = width/2;
@@ -45,15 +46,21 @@ function draw() {
     a.create();
     a.moving(character1.x);
     a.gravity(groundCoordinate);
+    hit = collideRectCircle(character1.x,character1.y,character1.characterSize,character1.characterSize,a.x,a.y,a.size);
+    hitbox();
   }
   else if (state === "lose") {
     loseScreen();
+    setTimeout(function(){
+      state = "start";
+      hit = false;
+    },3000);
   }
 }
 
 class enemies {
   constructor() {
-    this.x = 0;
+    this.x = 500;
     this.y = 0;
     this.xSpeed = 0.5;
     this.size = 100;
@@ -74,12 +81,12 @@ class enemies {
     this.y += this.ySpeed;
   }
   gravity(groundCoordinate) {
-    if (this.y <groundCoordinate-this.size) {
+    if (this.y <groundCoordinate-this.size/2) {
       this.ySpeed += 1;
     }
-    else if (this.y >=groundCoordinate-this.size) {
+    else if (this.y >=groundCoordinate-this.size/2) {
       this.ySpeed = 0;
-      this.y = groundCoordinate-this.size;
+      this.y = groundCoordinate-this.size/2;
     }
   }
 }
@@ -99,6 +106,12 @@ class ground {
   }
   moving() {
     this.x += this.speed;
+  }
+}
+
+function hitbox() {
+  if (hit) {
+    state = "lose";
   }
 }
 
@@ -194,5 +207,5 @@ function chooseBlue() {
 function loseScreen() {
   fill("red");
   textSize(200);
-  text("YOU DIED",CenterW-CenterW*0.08,CenterH);
+  text("YOU DIED",CenterW-CenterW*0.6,CenterH);
 }
