@@ -11,6 +11,7 @@ let b = false;
 let groundCoordinate = 300;
 let groundLength = 3000;
 let character1;
+let a;
 let blocks = [];
 let state = "start";
 let tempColor = "white";
@@ -22,6 +23,7 @@ function setup() {
   CenterH = height/2;
   character1 = new character();
   blocks[0] = new ground(0,groundCoordinate,groundLength,300);
+  a = new enemies();
 }
 
 function draw() {
@@ -40,6 +42,12 @@ function draw() {
     character1.movingWASD();
     character1.gravity(groundCoordinate);
     blocks[0].create();
+    a.create();
+    a.moving(character1.x);
+    a.gravity(groundCoordinate);
+  }
+  else if (state === "lose") {
+    loseScreen();
   }
 }
 
@@ -47,14 +55,32 @@ class enemies {
   constructor() {
     this.x = 0;
     this.y = 0;
-    this.xSpeed = 5;
-    this.size = 30;
+    this.xSpeed = 0.5;
+    this.size = 100;
     this.color = "purple";
     this.ySpeed = 0;
   }
   create() {
     fill(this.color);
-    circle(this.x,this.y,size);
+    circle(this.x,this.y,this.size);
+  }
+  moving(characterx) {
+    if (this.x<= characterx) {
+      this.x+= this.xSpeed;
+    }
+    else if (this.x >= characterx) {
+      this.x -= this.xSpeed;
+    }
+    this.y += this.ySpeed;
+  }
+  gravity(groundCoordinate) {
+    if (this.y <groundCoordinate-this.size) {
+      this.ySpeed += 1;
+    }
+    else if (this.y >=groundCoordinate-this.size) {
+      this.ySpeed = 0;
+      this.y = groundCoordinate-this.size;
+    }
   }
 }
 
@@ -162,4 +188,11 @@ function chooseGreen() {
 }
 function chooseBlue() {
   return mouseX<=width && state === "createCharacter";
+}
+
+//Losing Screen
+function loseScreen() {
+  fill("red");
+  textSize(200);
+  text("YOU DIED",CenterW-CenterW*0.08,CenterH);
 }

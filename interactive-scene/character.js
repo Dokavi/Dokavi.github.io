@@ -24,7 +24,7 @@ class character {
     this.y += this.ySpeed;
   }
   camera2D() {
-    translate(width/4-this.x,height*0.7-this.y);
+    translate(width/3-this.x,height*0.7-this.y);
   }
   gravity(groundCoordinate) {
     if (this.y <groundCoordinate-this.characterSize) {
