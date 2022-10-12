@@ -3,7 +3,7 @@ class character {
     this.x = 0;
     this.y = 0;
     this.xSpeed = 5;
-    this.characterSize = 100;
+    this.characterSize = 60;
     this.characterColor = "white";
     this.ySpeed = 0;
   }
@@ -26,8 +26,12 @@ class character {
   camera2D() {
     translate(width/3-this.x,height*0.7-this.y);
   }
-  gravity(groundCoordinate) {
-    if (this.y <groundCoordinate-this.characterSize) {
+  gravity(groundCoordinate,collideValue = [false,0,0]) {
+    if (collideValue[0]) {
+      this.ySpeed = 0;
+      this.y = collideValue[1] - collideValue[2];
+    }
+    else if (this.y <groundCoordinate-this.characterSize) {
       this.ySpeed += 0.5;
     }
     else if (this.y >=groundCoordinate-this.characterSize) {
@@ -36,6 +40,6 @@ class character {
     }
   }
   jump() {
-    this.ySpeed-=15;
+    this.ySpeed-=10;
   }
 }

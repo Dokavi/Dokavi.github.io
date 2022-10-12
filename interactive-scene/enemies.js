@@ -18,11 +18,11 @@ class enemies {
     else if (this.x >= characterx) {
       this.x -= this.xSpeed;
     }
-    this.y += this.ySpeed;
+    // this.y += this.ySpeed;
   }
   gravity(groundCoordinate) {
     if (this.y <groundCoordinate-this.size/2) {
-      this.ySpeed += 1;
+      this.ySpeed += 0.5;
     }
     else if (this.y >=groundCoordinate-this.size/2) {
       this.ySpeed = 0;

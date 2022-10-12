@@ -10,25 +10,33 @@ let g = false;
 let b = false;
 let groundCoordinate = 300;
 let groundLength = 3000;
+let collision = [];
+let winFlag;
 let shot;
 let character1;
 let a; 
-let aProp = [500,0,75];
+let aProp = [500,0,50];
 let blocks = [];
+blocks.length = 2;
 let b0 = [0,groundCoordinate,groundLength,300];
 let state = "start";
 let tempColor = "white";
 let CenterW,CenterH;
 let button;
 let hit = false;
+let won = false;
+let collideValue = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
   CenterW = width/2;
   CenterH = height/2;
+  collideValue = characterCollision();
   character1 = new character();
   blocks[0] = new ground(b0[0],b0[1],b0[2],b0[3]);
+  blocks[1] = new ground(400,200,200,30);
   a = new enemies(aProp[0],aProp[1],aProp[2]);
   shot = new bullets();
+  winFlag = new flag(1500,250,50,50);
 }
 
 function draw() {
@@ -45,16 +53,22 @@ function draw() {
     character1.characterColor = tempColor;
     character1.createCharacter();
     character1.movingWASD();
-    character1.gravity(groundCoordinate);
+    character1.gravity(groundCoordinate,collideValue);
     blocks[0].create();
+    blocks[1].create();
     a.create();
     a.moving(character1.x);
     a.gravity(groundCoordinate);
+    winFlag.create();
     hitbox();
+    characterCollision();
   }
   else if (state === "lose") {
     loseScreen();
     restart();
+  }
+  else if (state === "win") {
+    winning();
   }
 }
 
@@ -100,10 +114,8 @@ class flag {
     this.height = tempHeight;
   }
   create() {
-
-  }
-  victory() {
-    
+    fill("gold");
+    rect(this.x,this.y,this.length,this.height);
   }
 }
 
@@ -111,6 +123,20 @@ function hitbox() {
   hit = collideRectCircle(character1.x,character1.y,character1.characterSize,character1.characterSize,a.x,a.y,a.size);
   if (hit) {
     state = "lose";
+  }
+  won = collideRectRect(character1.x,character1.y,character1.characterSize,character1.characterSize,winFlag.x,winFlag.y,winFlag.length,winFlag.height);
+  if (won) {
+    state = "win";
+  }
+}
+
+function characterCollision() {
+  let check = false;
+  for (let i = 0; i < blocks.length ;i++) {
+    check = collideRectRect(character1.x,character1.y,character1.characterSize,character1.characterSize,blocks[i].x,blocks[i].y,blocks[i].length,blocks[i].height);
+    if (check) {
+      return [check,blocks[i].y,blocks[i].height];
+    }
   }
 }
 
@@ -209,6 +235,14 @@ function loseScreen() {
   fill("red");
   textSize(200);
   text("YOU DIED",CenterW-CenterW*0.6,CenterH);
+}
+//Winning Screen
+function winning() {
+  fill("gold");
+  textSize(200);
+  text("YOU WON",CenterW-CenterW*0.6,CenterH);
+  textSize(100);
+  text("Excellent Job!",CenterW-CenterW*0.4,CenterH+CenterH*0.3);
 }
 
 function restart() {
