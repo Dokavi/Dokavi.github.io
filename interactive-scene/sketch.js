@@ -8,6 +8,7 @@
 let r = false;
 let g = false;
 let b = false;
+let jumpBooleans = false;
 let groundCoordinate = 300;
 let groundLength = 3000;
 let collision = [];
@@ -30,7 +31,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   CenterW = width/2;
   CenterH = height/2;
-  collideValue = characterCollision();
   character1 = new character();
   blocks[0] = new ground(b0[0],b0[1],b0[2],b0[3]);
   blocks[1] = new ground(400,200,200,30);
@@ -62,6 +62,7 @@ function draw() {
     winFlag.create();
     hitbox();
     characterCollision();
+    collideValue = characterCollision();
   }
   else if (state === "lose") {
     loseScreen();
@@ -106,6 +107,7 @@ class ground {
     this.x += this.speed;
   }
 }
+
 class flag {
   constructor(tempX,tempY,tempLength,tempHeight) {
     this.x = tempX;
@@ -163,6 +165,7 @@ function keyTyped() {
 
 function mousePressed() {
   console.log(mouseX,mouseY);
+  console.log(character1,blocks[1]);
   //checkcoordinate
   if (state === "start" && startButton(CenterW-CenterW*0.2, CenterW+CenterW*0.2, CenterH-CenterH*0.2, CenterH+CenterH*0.2)) {
     state = "createCharacter";

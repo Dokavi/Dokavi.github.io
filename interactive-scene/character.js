@@ -27,12 +27,12 @@ class character {
     translate(width/3-this.x,height*0.7-this.y);
   }
   gravity(groundCoordinate,collideValue = [false,0,0]) {
-    if (collideValue[0]) {
-      this.ySpeed = 0;
-      this.y = collideValue[1] - collideValue[2];
-    }
-    else if (this.y <groundCoordinate-this.characterSize) {
+    if (this.y <groundCoordinate-this.characterSize) {
       this.ySpeed += 0.5;
+    }
+    else if (collideValue[0]) {
+      this.ySpeed = 0;
+      this.y = collideValue[1]-this.characterSize;
     }
     else if (this.y >=groundCoordinate-this.characterSize) {
       this.ySpeed = 0;
