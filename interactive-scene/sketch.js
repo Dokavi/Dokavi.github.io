@@ -11,7 +11,7 @@ let b = false;
 let jumpBooleans = false;
 let groundCoordinate = 300;
 let groundLength = 3000;
-let collision = [];
+let barrier = [];
 let winFlag;
 let shot;
 let character1;
@@ -75,6 +75,20 @@ function draw() {
   }
   else if (state === "win") {
     winning();
+  }
+}
+
+class wall {
+  constructor(tempX,tempY,tempLength,tempHeight,tempColor = "black") {
+    this.x = tempX;
+    this.y = tempY;
+    this.length = tempLength;
+    this.height = tempHeight;
+    this.color = tempColor;
+  }
+  create() {
+    fill(this.color);
+    rect(this.x,this.y,this.length,this.Height);
   }
 }
 
@@ -145,6 +159,16 @@ function characterCollision() {
     check = collideRectRect(character1.x,character1.y,character1.characterSize,character1.characterSize,blocks[i].x,blocks[i].y,blocks[i].length,blocks[i].height);
     if (check) {
       return [check,blocks[i].y,blocks[i].height];
+    }
+  }
+}
+
+function characterBarrier() {
+  let stop = false;
+  for (let i = 0; i < barrier.length ;i++) {
+    stop = collideRectRect(character1.x,character1.y,character1.characterSize,character1.characterSize,barrier[i].x,barrier[i].y,barrier[i].length,barrier[i].height);
+    if (stop) {
+      return [stop,barrier[i].y,barrier[i].height];
     }
   }
 }
