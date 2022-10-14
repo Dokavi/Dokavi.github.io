@@ -15,10 +15,10 @@ let collision = [];
 let winFlag;
 let shot;
 let character1;
-let a; 
-let aProp = [500,0,50];
+let a = []; 
+let aProp = [500,50,50,3];
 let blocks = [];
-blocks.length = 2;
+blocks.length = 3;
 let b0 = [0,groundCoordinate,groundLength,300];
 let state = "start";
 let tempColor = "white";
@@ -34,7 +34,9 @@ function setup() {
   character1 = new character();
   blocks[0] = new ground(b0[0],b0[1],b0[2],b0[3]);
   blocks[1] = new ground(400,200,200,30);
-  a = new enemies(aProp[0],aProp[1],aProp[2]);
+  blocks[2] = new ground(700,100,200,30);
+  a[0] = new enemies(aProp[0],aProp[1],aProp[2],3);
+  a[1] = new enemies(600,300,50,3);
   shot = new bullets();
   winFlag = new flag(1500,250,50,50);
 }
@@ -56,9 +58,12 @@ function draw() {
     character1.gravity(groundCoordinate,collideValue);
     blocks[0].create();
     blocks[1].create();
-    a.create();
-    a.moving(character1.x);
-    a.gravity(groundCoordinate);
+    blocks[2].create();
+    a[0].create();
+    a[0].moving(character1.x);
+    a[1].create();
+    a[1].moving(character1.x);
+    a[1].gravity(groundCoordinate);
     winFlag.create();
     hitbox();
     characterCollision();
@@ -122,9 +127,11 @@ class flag {
 }
 
 function hitbox() {
-  hit = collideRectCircle(character1.x,character1.y,character1.characterSize,character1.characterSize,a.x,a.y,a.size);
-  if (hit) {
-    state = "lose";
+  for (let i = 0; i < a.length;i++) {
+    hit = collideRectCircle(character1.x,character1.y,character1.characterSize,character1.characterSize,a[i].x,a[i].y,a[i].size);
+    if (hit) {
+      state = "lose";
+    }
   }
   won = collideRectRect(character1.x,character1.y,character1.characterSize,character1.characterSize,winFlag.x,winFlag.y,winFlag.length,winFlag.height);
   if (won) {
@@ -160,6 +167,7 @@ function drawLine() {
 function keyTyped() {
   if (key === "w") {
     character1.jump();
+    console.log(character1.ySpeed);
   }
 }
 
@@ -254,7 +262,9 @@ function restart() {
     hit = false;
     character1.x = 0;
     character1.y = 0;
-    a.x = 500;
-    a.y = 0;
+    for (let i = 0; i < a.length;i++) {
+      a[i].x = 500;
+      a[i].y = 50;
+    }
   },3000);
 }

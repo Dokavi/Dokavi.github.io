@@ -30,13 +30,19 @@ class character {
     if (this.y <groundCoordinate-this.characterSize) {
       this.ySpeed += 0.5;
     }
-    else if (collideValue[0]) {
-      this.ySpeed = 0;
-      this.y = collideValue[1]-this.characterSize;
-    }
     else if (this.y >=groundCoordinate-this.characterSize) {
       this.ySpeed = 0;
       this.y = groundCoordinate-this.characterSize;
+    }
+    if (collideValue[0]) {
+      if (this.y >=collideValue[1]-this.characterSize) {
+        this.ySpeed = 0;
+        this.y = collideValue[1]-this.characterSize;
+        constrain(this.ySpeed,10,0);
+      }
+      else if (this.y <collideValue[1]-this.characterSize) {
+        this.ySpeed +=0.5;
+      }
     }
   }
   jump() {

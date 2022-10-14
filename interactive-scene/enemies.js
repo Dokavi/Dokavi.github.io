@@ -1,8 +1,8 @@
 class enemies {
-  constructor(tempX,tempY,tempSize) {
+  constructor(tempX,tempY,tempSize,tempSpeed= 0.5) {
     this.x = tempX;
     this.y = tempY;
-    this.xSpeed = 0.5;
+    this.xSpeed = tempSpeed;
     this.size = tempSize;
     this.color = "purple";
     this.ySpeed = 0;
@@ -18,7 +18,7 @@ class enemies {
     else if (this.x >= characterx) {
       this.x -= this.xSpeed;
     }
-    // this.y += this.ySpeed;
+    this.y += this.ySpeed;
   }
   gravity(groundCoordinate) {
     if (this.y <groundCoordinate-this.size/2) {
