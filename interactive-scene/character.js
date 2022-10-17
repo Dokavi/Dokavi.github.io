@@ -11,7 +11,7 @@ class character {
     fill(this.characterColor);
     square(this.x, this.y,this.characterSize);
   }
-  movingWASD() {
+  movingWASD(characterBarrier) {
     if (keyIsDown(65)) {
       this.x -=this.xSpeed;
     } // key A move left
