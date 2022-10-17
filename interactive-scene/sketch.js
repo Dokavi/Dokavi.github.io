@@ -27,6 +27,7 @@ let button;
 let hit = false;
 let won = false;
 let collideValue = [];
+let barrierCollide = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
   CenterW = width/2;
@@ -35,8 +36,8 @@ function setup() {
   blocks[0] = new ground(b0[0],b0[1],b0[2],b0[3]);
   blocks[1] = new ground(400,200,200,30);
   blocks[2] = new ground(700,100,200,30);
-  a[0] = new enemies(aProp[0],aProp[1],aProp[2],3);
-  a[1] = new enemies(600,300,50,3);
+  a[0] = new enemies(aProp[0],aProp[1],aProp[2],2);
+  a[1] = new enemies(600,300,50,4);
   shot = new bullets();
   winFlag = new flag(1500,250,50,50);
 }
@@ -68,6 +69,7 @@ function draw() {
     hitbox();
     characterCollision();
     collideValue = characterCollision();
+    barrierCollide = characterBarrier();
   }
   else if (state === "lose") {
     loseScreen();
