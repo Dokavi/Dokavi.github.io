@@ -52,6 +52,19 @@ function moveCircles() {
 function bounce() {
   //edges
   for (let i = 0; i < theCircle.length; i++) {
+    for (let j=0; j<theCircle.length; j++) {
+      if (i !== j) { //don't check if hitting self
+        if (isColliding(theCircle[i], theCircle[j])) {
+          //swap the speeds
+          let tempDx = theCircle[i].dx;
+          let tempDy = theCircle[i].dy;
+          theCircle[i].dx = theCircle[j].dx;
+          theCircle[i].dy = theCircle[j].dy;
+          theCircle[j].dx = tempDx;
+          theCircle[j].dy = tempDy;
+        }
+      }
+    }
     if (theCircle[i].x +theCircle[i].radius >=width || theCircle[i].x - theCircle[i].radius<=0) {
       theCircle[i].xVelocity *=-1;
     }
@@ -59,18 +72,7 @@ function bounce() {
       theCircle[i].yVelocity *=-1;
     }
     //collision check
-    for (let j; j<theCircle.length;j++) {
-      if (i !== j) { //don't hit itself
-        if (isColliding(theCircle[i],theCircle[j])) {
-          let tempDx = theCircle[i].xVelocity;
-          let tempDy = theCircle[i].yVelocity;
-          theCircle[i].xVelocity = theCircle[j].xVelocity;
-          theCircle[i].yVelocity = theCircle[j].yVelocity;
-          theCircle[j].xVelocity = tempDx;
-          theCircle[j].yVelocity = tempDy;
-        }
-      }
-    }
+
   }
 }
 
@@ -88,11 +90,10 @@ function bounce() {
 //   }
 // }
 
-function isColliding(ball1,ball2) {
-  let d = dist(ball1.x,ball1.y,ball2.x,ball2.y);
+function isColliding(ball1, ball2) {
+  let distanceBetween = dist(ball1.x, ball1.y, ball2.x, ball2.y);
   let radiiSum = ball1.radius + ball2.radius;
-  // return !(d>radiiSum);
-  if (d > radiiSum) {
+  if (distanceBetween > radiiSum) {
     return false;
   }
   else {
