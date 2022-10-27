@@ -6,11 +6,12 @@
 // - describe what you did to take this project "above and beyond"
 
 
-const ROWS = 40;
-const COLS = 40;
+const ROWS = 100;
+const COLS = 100;
 let grid;
 let cellWidth;
 let cellHeight;
+let button = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -22,6 +23,10 @@ function setup() {
 function draw() {
   background(220);
   displayGrid(grid);
+  if (button) {
+    setInterval(grid = takeTurn(grid),3000);
+  }
+  
 }
 //reset and taketurn
 function keyPressed() {
@@ -30,6 +35,12 @@ function keyPressed() {
   }
   if (key === " ") {
     grid = takeTurn(grid);
+  }
+  if (key === "a") {
+    button = true;
+  }
+  if (key === "s") {
+    button = false;
   }
 }
 
@@ -42,7 +53,7 @@ function takeTurn(grid) {
       for (let i = -1; i<=1;i++) {
         for (let j = -1; j<=1;j++) {
           //edge case check
-          if (y+i >=0 && y+i <=ROWS && x+j >=0 && x+j <=COLS) {
+          if (y+i >=0 && y+i <ROWS && x+j >=0 && x+j <COLS) {
             neighbours +=grid[y+i][x+j];
           }
         }
@@ -52,13 +63,13 @@ function takeTurn(grid) {
       //apply rules
       if (grid[y][x] ===1) {// alive
         if (neighbours ===2 || neighbours ===3) {
-          nextTurn[y][x] === 1;
+          nextTurn[y][x] = 1;
         }
         else {
           nextTurn[y][x] =0;
         }
       }
-      if (grid[y][x] ===1) {
+      if (grid[y][x] === 0) {
         if (neighbours ===3) {
           nextTurn[y][x] = 1;
         }
