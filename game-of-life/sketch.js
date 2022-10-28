@@ -6,12 +6,16 @@
 // - describe what you did to take this project "above and beyond"
 
 
-const ROWS = 100;
-const COLS = 100;
+const ROWS = 50;
+const COLS = 50;
 let grid;
 let cellWidth;
 let cellHeight;
 let button = false;
+let gosperGun;
+function preload() {
+  gosperGun = loadJSON("gosper.json");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -23,8 +27,9 @@ function setup() {
 function draw() {
   background(220);
   displayGrid(grid);
-  if (button) {
-    setInterval(grid = takeTurn(grid),3000);
+  if (button && frameCount%3===0) {
+    grid = takeTurn(grid);
+    // setInterval(grid = takeTurn(grid),1000);
   }
   
 }
@@ -37,7 +42,10 @@ function keyPressed() {
     grid = takeTurn(grid);
   }
   if (key === "a") {
-    button = true;
+    button = !button;
+  }
+  if (key === "g") {
+    grid = gosperGun;
   }
   if (key === "s") {
     button = false;
