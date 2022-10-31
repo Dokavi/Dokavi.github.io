@@ -6,8 +6,8 @@
 // - describe what you did to take this project "above and beyond"
 
 
-const ROWS = 40;
-const COLS = 40;
+const ROWS = 30;
+const COLS = 30;
 let grid;
 let cellWidth;
 let cellHeight;
@@ -15,7 +15,7 @@ let cellHeight;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
-  cellWidth = width/COLS;
+  cellWidth = width/COLS*0.7;
   grid = createRandom2dArray(ROWS,COLS);
 }
 
@@ -78,5 +78,15 @@ function mousePressed() {
 }
 
 function mouseDragged() {
-  
+  let x = Math.floor(mouseX/cellWidth);
+  let y = Math.floor(mouseY/cellHeight);
+  if (grid[y][x] === 0) {
+    grid[y][x] =1;
+  }
+}
+
+function keyPressed() {
+  if (key === "e") {
+    grid = create2dArray(COLS, ROWS);
+  }
 }
