@@ -6,22 +6,33 @@
 // - describe what you did to take this project "above and beyond"
 
 
-const ROWS = 30;
-const COLS = 30;
+const ROWS = 20;
+const COLS = 20;
 let grid;
 let cellWidth;
 let cellHeight;
+let character = {
+  x:0,
+  y:0,
+  size:0,
+};
+let noWall = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
   cellWidth = width/COLS*0.7;
+  character.size = cellHeight;
+  character.x = cellWidth/2;
+  character.y = cellHeight/2;
   grid = createRandom2dArray(ROWS,COLS);
 }
 
 function draw() {
   background(220);
   displayGrid(grid);
+  displayHUD();
+  displayCharacter(character);
 }
 
 function create2dArray(COLS, ROWS) {
@@ -33,6 +44,16 @@ function create2dArray(COLS, ROWS) {
     }
   }
   return emptyArray;
+}
+
+function displayCharacter(character) {
+  fill("yellow");
+  circle(character.x,character.y,character.size);
+}
+
+function displayHUD() {
+  fill(255);
+  rect(width*0.7,0,width*0.3,height);
 }
 
 function displayGrid(grid) {
@@ -88,5 +109,32 @@ function mouseDragged() {
 function keyPressed() {
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
+  }
+  if (key === "d") {
+    character.x +=cellWidth;
+  }
+  if (key === "a") {
+    character.x -=cellWidth;
+  }
+  if (key === "s") {
+    character.y +=cellHeight;
+  }
+  if (key === "w") {
+    character.y -=cellHeight;
+  }    
+}
+
+function wallCheck() {
+  let x = Math.floor(character.x/cellWidth);
+  let y = Math.floor(character.y/cellHeight);
+  for (let a= -1; a <=1; a++) {
+    if (a!== 0 && x+a >= 0 && x+a <= grid[0].length && y+a >=0 && y+a <=grid.length) {
+      if (grid[y][x+a] === 0) {
+        return false;
+      }
+      if (grid[y][x+a] === 0) {
+        return false;
+      }
+    }
   }
 }
