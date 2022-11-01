@@ -5,34 +5,28 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-
-const ROWS = 20;
-const COLS = 20;
+const ROWS = 40;
+const COLS = 40;
 let grid;
 let cellWidth;
 let cellHeight;
-let character = {
+let character ={
   x:0,
-  y:0,
-  size:0,
+  y:0
 };
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
-  cellWidth = width/COLS*0.7;
-  // character.size = cellHeight;
-  // character.x = cellWidth/2;
-  // character.y = cellHeight/2;
+  cellWidth = width/COLS;
   grid = createRandom2dArray(ROWS,COLS);
+  //place player in grid
   grid[character.y][character.x] = 9;
 }
 
 function draw() {
   background(220);
   displayGrid(grid);
-  displayHUD();
-  displayCharacter(character);
 }
 
 function create2dArray(COLS, ROWS) {
@@ -46,33 +40,19 @@ function create2dArray(COLS, ROWS) {
   return emptyArray;
 }
 
-function displayCharacter(character) {
-  fill("yellow");
-  circle(character.x,character.y,character.size);
-}
-
-function displayHUD() {
-  fill(255);
-  rect(width*0.7,0,width*0.3,height);
-}
-
 function displayGrid(grid) {
   for (let y = 0;y<ROWS;y++) {
     for (let x = 0;x<COLS;x++) {
       if (grid[y][x] === 0) {
-        fill("darkBlue");
+        fill("white");
         rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x] === 1) {
         fill("black");
         rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
-      else if (grid[y][x] === 2) {
-        fill("gray");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
-      }
       else if (grid[y][x]=== 9) {
-        fill("darkBlue");
+        fill("white");
         rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
         fill("yellow");
         circle(x*cellWidth+cellWidth/2,y*cellHeight +cellHeight/2,cellHeight);
@@ -108,25 +88,14 @@ function mousePressed() {
   }
 }
 
-function mouseDragged() {
-  //grid-brush
-  let x = Math.floor(mouseX/cellWidth);
-  let y = Math.floor(mouseY/cellHeight);
-  //key 1 black
-  if (keyIsDown(49)) {
-    grid[y][x] = 1;
-  }
-  //key 2 gray
-  if (keyIsDown(50)) {
-    grid[y][x] = 2;
-  }
-}
-
-
 function keyPressed() {
-  //recreate grid
-  if (key === "e") {
-    grid = create2dArray(COLS, ROWS);
+  if (key === "d" && grid[character.y][character.x+1] ===0) {
+    //reset old location
+    grid[character.y][character.x] = 0;
+    //move
+    character.x++;
+    //set new player location
+    grid[character.y][character.x] = 9;
   }
   if (key === "d" && grid[character.y][character.x+1] ===0) {
     //reset old location
@@ -136,28 +105,12 @@ function keyPressed() {
     //set new player location
     grid[character.y][character.x] = 9;
   }
-  if (key === "a" && grid[character.y][character.x-1] ===0) {
+  if (key === "d" && grid[character.y][character.x+1] ===0) {
     //reset old location
     grid[character.y][character.x] = 0;
     //move
-    character.x--;
+    character.x++;
     //set new player location
     grid[character.y][character.x] = 9;
   }
-  if (key === "w" && grid[character.y-1][character.x] ===0) {
-    //reset old location
-    grid[character.y][character.x] = 0;
-    //move
-    character.y--;
-    //set new player location
-    grid[character.y][character.x] = 9;
-  }
-  if (key === "s" && grid[character.y+1][character.x] ===0) {
-    //reset old location
-    grid[character.y][character.x] = 0;
-    //move
-    character.y++;
-    //set new player location
-    grid[character.y][character.x] = 9;
-  }   
 }
