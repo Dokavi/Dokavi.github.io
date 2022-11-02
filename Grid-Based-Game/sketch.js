@@ -170,9 +170,14 @@ function moveMap() {
   if (grid[character.y] === 0) {
     character.y = ROWS;
   }
-  else if (grid[character.y][character.x]===ROWS) {
+  else if (grid[character.y]===ROWS) {
     character.y = 0;
   }
-  
+  if (grid[character.y][character.x] === 0) {
+    character.x = COLS;
+  }
+  else if (grid[character.y][character.x]===COLS) {
+    character.x = 0;
+  }
 }
 
