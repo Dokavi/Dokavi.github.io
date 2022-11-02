@@ -14,6 +14,13 @@ let character ={
   x:0,
   y:0
 };
+let stoneImg;
+let grassImg;
+
+function preload() {
+  stoneImg = loadImage("stone.png");
+  grassImg = loadImage("grass.png");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -44,16 +51,17 @@ function displayGrid(grid) {
   for (let y = 0;y<ROWS;y++) {
     for (let x = 0;x<COLS;x++) {
       if (grid[y][x] === 0) {
-        fill("white");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(grassImg,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        // fill("white");
+        // rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x] === 1) {
-        fill("black");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(stoneImg,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        // fill("black");
+        // rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x]=== 9) {
-        fill("white");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(grassImg,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
         fill("yellow");
         circle(x*cellWidth+cellWidth/2,y*cellHeight +cellHeight/2,cellHeight);
       }
