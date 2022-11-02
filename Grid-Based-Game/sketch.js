@@ -16,6 +16,16 @@ let character = {
   y:0,
   size:0,
 };
+let grassTextures;
+let rock;
+let player;
+
+
+function preload() {
+  grassTextures = loadImage("grass_1.png");
+  rock = loadImage("lab-rock_0.png");
+  player = loadImage("human_new.png");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -51,22 +61,18 @@ function displayGrid(grid) {
   for (let y = 0;y<ROWS;y++) {
     for (let x = 0;x<COLS;x++) {
       if (grid[y][x] === 0) {
-        fill("darkBlue");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(grassTextures,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x] === 1) {
-        fill("black");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(rock,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x] === 2) {
         fill("gray");
         rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x]=== 9) {
-        fill("darkBlue");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
-        fill("yellow");
-        circle(x*cellWidth+cellWidth/2,y*cellHeight +cellHeight/2,cellHeight);
+        image(grassTextures,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(player,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
     }
   }
@@ -103,11 +109,15 @@ function mouseDragged() {
   //grid-brush
   let x = Math.floor(mouseX/cellWidth);
   let y = Math.floor(mouseY/cellHeight);
-  //key 1 black
+  //default move
+  if (keyIsDown(192)) {
+    grid[y][x] = 0;
+  }
+  //key 1 wall 1
   if (keyIsDown(49)) {
     grid[y][x] = 1;
   }
-  //key 2 gray
+  //key 2 wall 2
   if (keyIsDown(50)) {
     grid[y][x] = 2;
   }
