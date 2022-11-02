@@ -21,9 +21,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
   cellWidth = width/COLS*0.7;
-  // character.size = cellHeight;
-  // character.x = cellWidth/2;
-  // character.y = cellHeight/2;
   grid = createRandom2dArray(ROWS,COLS);
   grid[character.y][character.x] = 9;
 }
@@ -32,7 +29,6 @@ function draw() {
   background(220);
   displayGrid(grid);
   displayHUD();
-  displayCharacter(character);
 }
 
 function create2dArray(COLS, ROWS) {
@@ -44,11 +40,6 @@ function create2dArray(COLS, ROWS) {
     }
   }
   return emptyArray;
-}
-
-function displayCharacter(character) {
-  fill("yellow");
-  circle(character.x,character.y,character.size);
 }
 
 function displayHUD() {
@@ -161,3 +152,17 @@ function keyPressed() {
     grid[character.y][character.x] = 9;
   }   
 }
+
+function moveMap() {
+  // set new map
+  grid = create2dArray(COLS, ROWS);
+  // set character
+  if (grid[character.y] === 0) {
+    character.y = ROWS;
+  }
+  else if (grid[character.y][character.x]===ROWS) {
+    character.y = 0;
+  }
+  
+}
+
