@@ -129,43 +129,49 @@ function keyPressed() {
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
   }
-  if (key === "d" && grid[character.y][character.x+1] ===0) {
-    //reset old location
-    grid[character.y][character.x] = 0;
-    //move
-    character.x++;
-    //set new player location
-    grid[character.y][character.x] = 9;
+  if ((key === "w" || key === "s") && (grid[character.y] ===0 ||grid[character.y]===ROWS-1)) {
+    moveMap();
   }
-  if (key === "a" && grid[character.y][character.x-1] ===0) {
-    //reset old location
-    grid[character.y][character.x] = 0;
-    //move
-    character.x--;
-    //set new player location
-    grid[character.y][character.x] = 9;
+  else if ((key === "d" || key === "a") && (grid[character.y][character.x] ===0 || grid[character.y][character.x]===COLS-1)) {
+    moveMap();
   }
-  if (key === "w" && grid[character.y-1][character.x] ===0) {
-    //reset old location
-    grid[character.y][character.x] = 0;
-    //move
-    character.y--;
-    //set new player location
-    grid[character.y][character.x] = 9;
-  }
-  if (key === "s" && grid[character.y+1][character.x] ===0) {
-    //reset old location
-    grid[character.y][character.x] = 0;
-    //move
-    character.y++;
-    //set new player location
-    grid[character.y][character.x] = 9;
+  else {
+    if (key === "d" && grid[character.y][character.x+1] ===0) {
+      //reset old location
+      grid[character.y][character.x] = 0;
+      //move
+      character.x++;
+      //set new player location
+      grid[character.y][character.x] = 9;
+    }
+    if (key === "a" && grid[character.y][character.x-1] ===0) {
+      //reset old location
+      grid[character.y][character.x] = 0;
+      //move
+      character.x--;
+      //set new player location
+      grid[character.y][character.x] = 9;
+    }
+    if (key === "w" && grid[character.y-1][character.x] ===0) {
+      //reset old location
+      grid[character.y][character.x] = 0;
+      //move
+      character.y--;
+      //set new player location
+      grid[character.y][character.x] = 9;
+    }
+    if (key === "s" && grid[character.y+1][character.x] ===0) {
+      //reset old location
+      grid[character.y][character.x] = 0;
+      //move
+      character.y++;
+      //set new player location
+      grid[character.y][character.x] = 9;
+    }
   }   
 }
 
 function moveMap() {
-  // set new map
-  grid = create2dArray(COLS, ROWS);
   // set character
   if (grid[character.y] === 0) {
     character.y = ROWS;
@@ -179,5 +185,7 @@ function moveMap() {
   else if (grid[character.y][character.x]===COLS) {
     character.x = 0;
   }
+  // set new map
+  grid = create2dArray(COLS, ROWS);
 }
 
