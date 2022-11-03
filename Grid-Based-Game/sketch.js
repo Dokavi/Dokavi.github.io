@@ -129,7 +129,7 @@ function keyPressed() {
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
   }
-  if ((key === "w" || key === "s") && (grid[character.y] ===0 ||grid[character.y]===ROWS-1)) {
+  if ((key === "w" || key === "s") && ((grid[character.y] ===0 ||grid[character.y]===ROWS-1))) {
     moveMap();
   }
   else if ((key === "d" || key === "a") && (grid[character.y][character.x] ===0 || grid[character.y][character.x]===COLS-1)) {
