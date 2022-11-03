@@ -129,63 +129,69 @@ function keyPressed() {
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
   }
-  if ((key === "w" || key === "s") && ((grid[character.y] ===0 ||grid[character.y]===ROWS-1))) {
+  //move to new map
+  if (key === "w" && character.y===0) {
     moveMap();
   }
-  else if ((key === "d" || key === "a") && (grid[character.y][character.x] ===0 || grid[character.y][character.x]===COLS-1)) {
+  if (key === "s" && character.y===19) {
     moveMap();
   }
-  else {
-    if (key === "d" && grid[character.y][character.x+1] ===0) {
-      //reset old location
-      grid[character.y][character.x] = 0;
-      //move
-      character.x++;
-      //set new player location
-      grid[character.y][character.x] = 9;
-    }
-    if (key === "a" && grid[character.y][character.x-1] ===0) {
-      //reset old location
-      grid[character.y][character.x] = 0;
-      //move
-      character.x--;
-      //set new player location
-      grid[character.y][character.x] = 9;
-    }
-    if (key === "w" && grid[character.y-1][character.x] ===0) {
-      //reset old location
-      grid[character.y][character.x] = 0;
-      //move
-      character.y--;
-      //set new player location
-      grid[character.y][character.x] = 9;
-    }
-    if (key === "s" && grid[character.y+1][character.x] ===0) {
-      //reset old location
-      grid[character.y][character.x] = 0;
-      //move
-      character.y++;
-      //set new player location
-      grid[character.y][character.x] = 9;
-    }
-  }   
+  //Moving function
+  if (key === "d" && grid[character.y][character.x+1] ===0) {
+    //reset old location
+    grid[character.y][character.x] = 0;
+    //move
+    character.x++;
+    //set new player location
+    grid[character.y][character.x] = 9;
+  }
+  if (key === "a" && grid[character.y][character.x-1] ===0) {
+    //reset old location
+    grid[character.y][character.x] = 0;
+    //move
+    character.x--;
+    //set new player location
+    grid[character.y][character.x] = 9;
+  }
+  if (key === "w" && grid[character.y-1][character.x] ===0) {
+    //reset old location
+    grid[character.y][character.x] = 0;
+    //move
+    character.y--;
+    //set new player location
+    grid[character.y][character.x] = 9;
+  }
+  if (key === "s" && grid[character.y+1][character.x] ===0) {
+    //reset old location
+    grid[character.y][character.x] = 0;
+    //move
+    character.y++;
+    //set new player location
+    grid[character.y][character.x] = 9;
+  }
 }
 
 function moveMap() {
-  // set character
-  if (grid[character.y] === 0) {
-    character.y = ROWS;
-  }
-  else if (grid[character.y]===ROWS) {
-    character.y = 0;
-  }
-  if (grid[character.y][character.x] === 0) {
-    character.x = COLS;
-  }
-  else if (grid[character.y][character.x]===COLS) {
-    character.x = 0;
-  }
   // set new map
   grid = create2dArray(COLS, ROWS);
+  // set character
+  if (character.y === 0) {
+    //move to other side of the map
+    character.y = 19;
+    //set new player new location
+    grid[character.y][character.x] = 9;
+  }
+  else if (character.y===ROWS-1) {
+    //move to other side of the map
+    character.y = 1;
+    //set new player new location
+    grid[character.y][character.x] = 9;
+  }
+  // else if (character.x === 0) {
+  //   character.x = COLS;
+  // }
+  // else if (character.x===COLS) {
+  //   character.x = 0;
+  // }
 }
 
