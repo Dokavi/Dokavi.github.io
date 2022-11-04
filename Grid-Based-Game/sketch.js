@@ -12,19 +12,29 @@ let grid;
 let cellWidth;
 let cellHeight;
 let character = {
-  x:0,
-  y:0,
+  x:1,
+  y:1,
   size:0,
 };
+let north;
+let west;
+let south;
+let east;
+let door;
 let grassTextures;
 let rock;
 let player;
 
 
 function preload() {
+  north = loadImage("dirt_north_new.png");
+  west = loadImage("dirt_west_new.png");
+  south = loadImage("dirt_south_new.png");
+  east = loadImage("dirt_east_new.png");
   grassTextures = loadImage("grass_1.png");
   rock = loadImage("lab-rock_0.png");
   player = loadImage("human_new.png");
+  door = loadImage("entrance.png");
 }
 
 function setup() {
@@ -70,6 +80,21 @@ function displayGrid(grid) {
         fill("gray");
         rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
+      else if (grid[y][x] === 3) {
+        image(door,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+      }
+      else if (grid[y][x] === "north") {
+        image(north,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+      }
+      else if (grid[y][x] === "west") {
+        image(west,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+      }
+      else if (grid[y][x] === "south") {
+        image(south,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+      }
+      else if (grid[y][x] === "east") {
+        image(east,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+      }
       else if (grid[y][x]=== 9) {
         image(grassTextures,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
         image(player,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
@@ -106,7 +131,7 @@ function mousePressed() {
 }
 
 function mouseDragged() {
-  //grid-brush
+  //map editor
   let x = Math.floor(mouseX/cellWidth);
   let y = Math.floor(mouseY/cellHeight);
   //default move
@@ -121,6 +146,22 @@ function mouseDragged() {
   if (keyIsDown(50)) {
     grid[y][x] = 2;
   }
+  //key 3 wall 3
+  if (keyIsDown(51)) {
+    grid[y][x] = 3;
+  }
+  if (keyIsDown(52)) {
+    grid[y][x] = "north";
+  }
+  if (keyIsDown(53)) {
+    grid[y][x] = "west";
+  }
+  if (keyIsDown(54)) {
+    grid[y][x] = "south";
+  }
+  if (keyIsDown(55)) {
+    grid[y][x] = "east";
+  }
 }
 
 
@@ -129,13 +170,52 @@ function keyPressed() {
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
   }
-  //move to new map
+  //Move Areas
   if (key === "w" && character.y===0) {
-    moveMap();
+    // set new area
+    grid = create2dArray(COLS, ROWS);
+    // set character
+    if (character.y === 0) {
+    //move to other side of the map
+      character.y = 19;
+      //set new player new location
+      grid[character.y][character.x] = 9;
+    }
   }
   if (key === "s" && character.y===19) {
-    moveMap();
+    // set new area
+    grid = create2dArray(COLS, ROWS);
+    // set character
+    if (character.y===ROWS-1) {
+    //move to other side of the map
+      character.y = 0;
+      //set new player new location
+      grid[character.y][character.x] = 9;
+    }
   }
+  if (key === "a" && character.x===0) {
+    // set new area
+    grid = create2dArray(COLS, ROWS);
+    // set character
+    if (character.x === 0) {
+    //move to other side
+      character.x = COLS;
+      //set location
+      grid[character.y][character.x] = 9;
+    }
+  }
+  if (key === "d" && character.x===19) {
+    // set new area
+    grid = create2dArray(COLS, ROWS);
+    // set character
+    if (character.x === COLS-1) {
+    //move to other side
+      character.x = 0;
+      //set location
+      grid[character.y][character.x] = 9;
+    }
+  }
+  
   //Moving function
   if (key === "d" && grid[character.y][character.x+1] ===0) {
     //reset old location
@@ -170,28 +250,3 @@ function keyPressed() {
     grid[character.y][character.x] = 9;
   }
 }
-
-function moveMap() {
-  // set new map
-  grid = create2dArray(COLS, ROWS);
-  // set character
-  if (character.y === 0) {
-    //move to other side of the map
-    character.y = 19;
-    //set new player new location
-    grid[character.y][character.x] = 9;
-  }
-  else if (character.y===ROWS-1) {
-    //move to other side of the map
-    character.y = 1;
-    //set new player new location
-    grid[character.y][character.x] = 9;
-  }
-  // else if (character.x === 0) {
-  //   character.x = COLS;
-  // }
-  // else if (character.x===COLS) {
-  //   character.x = 0;
-  // }
-}
-
