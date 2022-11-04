@@ -12,10 +12,12 @@ let grid;
 let cellWidth;
 let cellHeight;
 let character = {
-  x:1,
-  y:1,
+  x:3,
+  y:3,
   size:0,
 };
+let start;
+let room2;
 let north;
 let west;
 let south;
@@ -24,9 +26,12 @@ let door;
 let grassTextures;
 let rock;
 let player;
+let areaState = "start";
 
 
 function preload() {
+  start = loadJSON("Start.json");
+  room2 = loadJSON("room2.JSON");
   north = loadImage("dirt_north_new.png");
   west = loadImage("dirt_west_new.png");
   south = loadImage("dirt_south_new.png");
@@ -41,7 +46,10 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
   cellWidth = width/COLS*0.7;
-  grid = createRandom2dArray(ROWS,COLS);
+  if (areaState === "start") {
+    grid = start;
+  }
+  
   grid[character.y][character.x] = 9;
 }
 
@@ -195,22 +203,30 @@ function keyPressed() {
   }
   if (key === "a" && character.x===0) {
     // set new area
-    grid = create2dArray(COLS, ROWS);
+    if (areaState === "room2") {
+      grid[character.y][character.x] = 0; //reset old location
+      grid = start;
+      areaState = "start";
+    }
     // set character
     if (character.x === 0) {
     //move to other side
-      character.x = COLS;
+      character.x = COLS-1;
       //set location
       grid[character.y][character.x] = 9;
     }
   }
   if (key === "d" && character.x===19) {
     // set new area
-    grid = create2dArray(COLS, ROWS);
+    if (areaState === "start") {
+      grid[character.y][character.x] = 0; //reset old location
+      grid = room2;
+      areaState = "room2";
+    }
     // set character
     if (character.x === COLS-1) {
-    //move to other side
-      character.x = 0;
+      //move to other side
+      character.x = 1;
       //set location
       grid[character.y][character.x] = 9;
     }
