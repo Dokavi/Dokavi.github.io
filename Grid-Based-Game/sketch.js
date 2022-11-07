@@ -1,9 +1,9 @@
-// Project Title
-// Your Name
+// Dungeon explorer?
+// Doan Khanh Vinh
 // Date
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// - create a special function for moving between areas.
 
 
 const ROWS = 20;
@@ -30,8 +30,8 @@ let areaState = "start";
 
 
 function preload() {
-  start = loadJSON("Start.json");
-  room2 = loadJSON("room2.JSON");
+  start = loadJSON("startA.json");
+  room2 = loadJSON("room2.json");
   north = loadImage("dirt_north_new.png");
   west = loadImage("dirt_west_new.png");
   south = loadImage("dirt_south_new.png");
@@ -50,7 +50,7 @@ function setup() {
     grid = start;
   }
   
-  grid[character.y][character.x] = 9;
+  grid[character.y][character.x] = "player";
 }
 
 function draw() {
@@ -103,7 +103,7 @@ function displayGrid(grid) {
       else if (grid[y][x] === "east") {
         image(east,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
-      else if (grid[y][x]=== 9) {
+      else if (grid[y][x]=== "player") {
         image(grassTextures,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
         image(player,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
@@ -172,7 +172,7 @@ function mouseDragged() {
   }
 }
 
-
+// All the code using key, I don't know if create a function and put it in will still have the same effect.
 function keyPressed() {
   //recreate grid
   if (key === "e") {
@@ -187,7 +187,7 @@ function keyPressed() {
     //move to other side of the map
       character.y = 19;
       //set new player new location
-      grid[character.y][character.x] = 9;
+      grid[character.y][character.x] = "player";
     }
   }
   if (key === "s" && character.y===19) {
@@ -196,9 +196,9 @@ function keyPressed() {
     // set character
     if (character.y===ROWS-1) {
     //move to other side of the map
-      character.y = 0;
+      character.y = 1;
       //set new player new location
-      grid[character.y][character.x] = 9;
+      grid[character.y][character.x] = "player";
     }
   }
   if (key === "a" && character.x===0) {
@@ -213,7 +213,7 @@ function keyPressed() {
     //move to other side
       character.x = COLS-1;
       //set location
-      grid[character.y][character.x] = 9;
+      grid[character.y][character.x] = "player";
     }
   }
   if (key === "d" && character.x===19) {
@@ -228,7 +228,7 @@ function keyPressed() {
       //move to other side
       character.x = 1;
       //set location
-      grid[character.y][character.x] = 9;
+      grid[character.y][character.x] = "player";
     }
   }
   
@@ -239,7 +239,7 @@ function keyPressed() {
     //move
     character.x++;
     //set new player location
-    grid[character.y][character.x] = 9;
+    grid[character.y][character.x] = "player";
   }
   if (key === "a" && grid[character.y][character.x-1] ===0) {
     //reset old location
@@ -247,7 +247,7 @@ function keyPressed() {
     //move
     character.x--;
     //set new player location
-    grid[character.y][character.x] = 9;
+    grid[character.y][character.x] = "player";
   }
   if (key === "w" && grid[character.y-1][character.x] ===0) {
     //reset old location
@@ -255,7 +255,7 @@ function keyPressed() {
     //move
     character.y--;
     //set new player location
-    grid[character.y][character.x] = 9;
+    grid[character.y][character.x] = "player";
   }
   if (key === "s" && grid[character.y+1][character.x] ===0) {
     //reset old location
@@ -263,6 +263,6 @@ function keyPressed() {
     //move
     character.y++;
     //set new player location
-    grid[character.y][character.x] = 9;
+    grid[character.y][character.x] = "player";
   }
 }
