@@ -35,6 +35,8 @@ let door;
 let grassTextures;
 let rock;
 let player;
+let yellow_dirt;
+let lair_stone;
 let areaState = "start";
 
 
@@ -43,12 +45,15 @@ function preload() {
   room1A = loadJSON("room1A.json");
   room2A = loadJSON("room2A.json");
   room3A = loadJSON("room3A.json");
+  room4A = loadJSON("room4A.json");
   north = loadImage("dirt_north_new.png");
   west = loadImage("dirt_west_new.png");
   south = loadImage("dirt_south_new.png");
   east = loadImage("dirt_east_new.png");
   grassTextures = loadImage("grass_1.png");
   rock = loadImage("lab-rock_0.png");
+  yellow_dirt = loadImage("dirt_1_new.png");
+  lair_stone = loadImage("lair_1_old.png");
   player = loadImage("human_new.png");
   door = loadImage("entrance.png");
 }
@@ -96,11 +101,10 @@ function displayGrid(grid) {
         image(rock,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x] === 2) {
-        fill("gray");
-        rect(x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(lair_stone,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x] === 3) {
-        image(door,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(yellow_dirt,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
       else if (grid[y][x] === "north") {
         image(north,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
@@ -195,7 +199,22 @@ function keyPressed() {
   if (key === "w" && character.y===0) {
     if (areaState === "room3A") {
       // set new area
-      grid = create2dArray(COLS, ROWS);
+      grid[character.y][character.x] = 0; //reset old location
+      grid = room1A;
+      areaState = "room1A";
+      // set character
+      if (character.y === 0) {
+        //move to other side of the map
+        character.y = 19;
+        //set new player new location
+        grid[character.y][character.x] = "player";
+      }
+    }
+    else if (areaState === "room4A") { // ROOM 4 TO ROOM 2
+      // set new area
+      grid[character.y][character.x] = 0; //reset old location
+      grid = room2A;
+      areaState = "room2A";
       // set character
       if (character.y === 0) {
         //move to other side of the map
@@ -212,6 +231,19 @@ function keyPressed() {
       grid[character.y][character.x] = 0; //reset old location
       grid = room3A;
       areaState = "room3A";
+      // set character
+      if (character.y===ROWS-1) {
+        //move to other side of the map
+        character.y = 1;
+        //set new player new location
+        grid[character.y][character.x] = "player";
+      }
+    }
+    else if (areaState === "room2A") {// ROOM 2 TO ROOM 4
+      // set new area
+      grid[character.y][character.x] = 0; //reset old location
+      grid = room4A;
+      areaState = "room4A";
       // set character
       if (character.y===ROWS-1) {
         //move to other side of the map
@@ -248,6 +280,18 @@ function keyPressed() {
         grid[character.y][character.x] = "player";
       }
     }
+    else if (areaState === "room4A") { //ROOM 4 BACK TO ROOM 3
+      grid[character.y][character.x] = 0; //reset old location
+      grid = room3A;
+      areaState = "room3A";
+      // set character
+      if (character.x === 0) {
+        //move to other side
+        character.x = COLS-1;
+        //set location
+        grid[character.y][character.x] = "player";
+      }
+    }
   }
   //GO RIGHT
   if (key === "d" && character.x===19) {
@@ -268,6 +312,30 @@ function keyPressed() {
       grid[character.y][character.x] = 0; //reset old location
       grid = room2A;
       areaState = "room2A";
+      // set character
+      if (character.x === COLS-1) {
+        //move to other side
+        character.x = 1;
+        //set location
+        grid[character.y][character.x] = "player";
+      }
+    }
+    else if (areaState === "room3A") {//ROOM 3 TO ROOM 4
+      grid[character.y][character.x] = 0; //reset old location
+      grid = room4A;
+      areaState = "room4A";
+      // set character
+      if (character.x === COLS-1) {
+        //move to other side
+        character.x = 1;
+        //set location
+        grid[character.y][character.x] = "player";
+      }
+    }
+    else if (areaState === "room4A") {//ROOM 3 TO ROOM 4
+      grid[character.y][character.x] = 0; //reset old location
+      grid = create2dArray(COLS,ROWS);
+      areaState = "room5A";
       // set character
       if (character.x === COLS-1) {
         //move to other side
