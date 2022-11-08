@@ -38,6 +38,7 @@ let player;
 let yellow_dirt;
 let lair_stone;
 let areaState = "start";
+let walkable = [0,3];
 
 
 function preload() {
@@ -122,6 +123,10 @@ function displayGrid(grid) {
         image(grassTextures,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
         image(player,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
+      else if (grid[y][x]=== "player2") {
+        image(yellow_dirt,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(player,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+      }
     }
   }
 }
@@ -194,6 +199,11 @@ function keyPressed() {
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
   }
+  moveMap();
+  movePlayer();
+}
+
+function moveMap() {
   //Move Areas
   //GO UP
   if (key === "w" && character.y===0) {
@@ -345,15 +355,29 @@ function keyPressed() {
       }
     }
   }
-  
+}
+
+function movePlayer() {
   //Moving function
-  if (key === "d" && grid[character.y][character.x+1] ===0) {
-    //reset old location
-    grid[character.y][character.x] = 0;
-    //move
-    character.x++;
-    //set new player location
-    grid[character.y][character.x] = "player";
+  let terrainType;
+  if (key === "d" ) {
+    for (let i = 0; i <=1; i ++) {
+      if (grid[character.y][character.x+1] === walkable[i]) {
+        //memorize type
+        terrainType = grid[character.y][character.x+1];
+        //reset old location
+        grid[character.y][character.x] = walkable[i];
+        //move
+        character.x++;
+        //set new player location
+        if (terrainType === 0){
+          grid[character.y][character.x] = "player";
+        }
+        else if (terrainType === 3){
+          grid[character.y][character.x] = "player2";
+        }
+      }
+    }
   }
   if (key === "a" && grid[character.y][character.x-1] ===0) {
     //reset old location
