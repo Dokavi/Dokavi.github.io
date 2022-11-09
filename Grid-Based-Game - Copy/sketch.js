@@ -41,6 +41,9 @@ let lair_stone;
 let areaState = "start";
 let walkable = [0,3];
 let playerWalk = ["player","player2"];
+let oldLocation;
+let newLocation;
+
 
 function preload() {
   start = loadJSON("startA.json");
@@ -450,5 +453,16 @@ function setDirection() {
         }
       }
     }
+  }
+}
+
+function move() {
+  if (character.direction === "R") {
+    //reset old location
+    grid[character.y][character.x] = 0;
+    //move
+    character.x++;
+    //set new location
+    grid[character.y][character.x] = "player";
   }
 }
