@@ -368,19 +368,17 @@ function setDirection() {
       if (grid[character.y][character.x+1] === walkable[i]) {//next block is walakble
         //reset old location
         if (grid[character.y][character.x] === "player") {
-          grid[character.y][character.x] = 0;
+          oldLocation = 0;
         }
         else if (grid[character.y][character.x] === "player2") {
-          grid[character.y][character.x] = 3;
+          oldLocation = 3;
         }
-        //move
-        character.x++;
         //set new player location
         if (walkable[i] === 0){
-          grid[character.y][character.x] = "player";
+          newLocation = "player";
         }
         else if (walkable[i] === 3){
-          grid[character.y][character.x] = "player2";
+          newLocation = "player2";
         }
       }
     }
@@ -391,19 +389,19 @@ function setDirection() {
       if (grid[character.y][character.x-1] === walkable[i]) {
         //reset old location
         if (grid[character.y][character.x] === "player") {
-          grid[character.y][character.x] = 0;
+          oldLocation = 0;
         }
         else if (grid[character.y][character.x] === "player2") {
-          grid[character.y][character.x] = 3;
+          oldLocation = 3;
         }
         //move
         character.x--;
         //set new player location
         if (walkable[i] === 0){
-          grid[character.y][character.x] = "player";
+          newLocation = "player";
         }
         else if (walkable[i] === 3){
-          grid[character.y][character.x] = "player2";
+          newLocation = "player2";
         }
       }
     }
@@ -414,19 +412,19 @@ function setDirection() {
       if (grid[character.y-1][character.x]=== walkable[i]) {
         //reset old location
         if (grid[character.y][character.x] === "player") {
-          grid[character.y][character.x] = 0;
+          oldLocation = 0;
         }
         else if (grid[character.y][character.x] === "player2") {
-          grid[character.y][character.x] = 3;
+          oldLocation = 3;
         }
         //move
         character.y--;
         //set new player location
         if (walkable[i] === 0){
-          grid[character.y][character.x] = "player";
+          newLocation = "player";
         }
         else if (walkable[i] === 3){
-          grid[character.y][character.x] = "player2";
+          newLocation = "player2";
         }
       }
     }
@@ -437,19 +435,19 @@ function setDirection() {
       if (grid[character.y+1][character.x] === walkable[i]) {
         //reset old location
         if (grid[character.y][character.x] === "player") {
-          grid[character.y][character.x] = 0;
+          oldLocation = 0;
         }
         else if (grid[character.y][character.x] === "player2") {
-          grid[character.y][character.x] = 3;
+          oldLocation = 3;
         }
         //move
         character.y++;
         //set new player location
         if (walkable[i] === 0){
-          grid[character.y][character.x] = "player";
+          newLocation = "player";
         }
         else if (walkable[i] === 3){
-          grid[character.y][character.x] = "player2";
+          newLocation = "player2";
         }
       }
     }
