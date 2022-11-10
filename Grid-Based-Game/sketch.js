@@ -361,7 +361,8 @@ function setDirection() {
   //Moving function
   if (key === "d") {
     character.direction = "R";
-    let done = false;
+    let restraint = character.x +1;
+    let terrain;
     for (let i = 0; i <=1; i ++) {
       if (grid[character.y][character.x+1] === walkable[i]) {//next block is walakble
         //reset old location
@@ -372,19 +373,17 @@ function setDirection() {
           grid[character.y][character.x] = 3;
         }
         //move
-        if (done === false) {
+        if (restraint > character.x) {
           character.x++;
+          terrain = walkable[i];
         }
         //set new player location
-        if (done === false){
-          if (walkable[i] === 0){
-            grid[character.y][character.x] = "player";
-          }
-          else if (walkable[i] === 3){
-            grid[character.y][character.x] = "player2";
-          }
-          done = true;
+        if (terrain === 0){
+          grid[character.y][character.x] = "player";
         }
+        else if (terrain === 3){
+          grid[character.y][character.x] = "player2";
+        }      
       }
     }
   }
