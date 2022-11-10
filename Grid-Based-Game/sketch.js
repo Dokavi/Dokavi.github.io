@@ -359,8 +359,9 @@ function moveMap() {
 
 function setDirection() {
   //Moving function
-  if (key === "d" ) {
+  if (key === "d") {
     character.direction = "R";
+    let done = false;
     for (let i = 0; i <=1; i ++) {
       if (grid[character.y][character.x+1] === walkable[i]) {//next block is walakble
         //reset old location
@@ -371,13 +372,18 @@ function setDirection() {
           grid[character.y][character.x] = 3;
         }
         //move
-        character.x++;
-        //set new player location
-        if (walkable[i] === 0){
-          grid[character.y][character.x] = "player";
+        if (done === false) {
+          character.x++;
         }
-        else if (walkable[i] === 3){
-          grid[character.y][character.x] = "player2";
+        //set new player location
+        if (done === false){
+          if (walkable[i] === 0){
+            grid[character.y][character.x] = "player";
+          }
+          else if (walkable[i] === 3){
+            grid[character.y][character.x] = "player2";
+          }
+          done = true;
         }
       }
     }
@@ -428,7 +434,7 @@ function setDirection() {
       }
     }
   }
-  if (key === "s" ) {
+  if (key === "s") {
     character.direction = "D";
     for (let i = 0; i <=1; i ++) {
       if (grid[character.y+1][character.x] === walkable[i]) {
