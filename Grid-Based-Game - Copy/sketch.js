@@ -43,6 +43,7 @@ let walkable = [0,3];
 let playerWalk = ["player","player2"];
 let oldLocation;
 let newLocation;
+let walk;
 
 
 function preload() {
@@ -203,6 +204,7 @@ function keyPressed() {
   }
   moveMap();
   setDirection();
+  move();
 }
 
 // I don't know if create a function and put it in will still have the same effect.
@@ -394,8 +396,6 @@ function setDirection() {
         else if (grid[character.y][character.x] === "player2") {
           oldLocation = 3;
         }
-        //move
-        character.x--;
         //set new player location
         if (walkable[i] === 0){
           newLocation = "player";
@@ -417,8 +417,6 @@ function setDirection() {
         else if (grid[character.y][character.x] === "player2") {
           oldLocation = 3;
         }
-        //move
-        character.y--;
         //set new player location
         if (walkable[i] === 0){
           newLocation = "player";
@@ -440,8 +438,6 @@ function setDirection() {
         else if (grid[character.y][character.x] === "player2") {
           oldLocation = 3;
         }
-        //move
-        character.y++;
         //set new player location
         if (walkable[i] === 0){
           newLocation = "player";
@@ -457,10 +453,34 @@ function setDirection() {
 function move() {
   if (character.direction === "R") {
     //reset old location
-    grid[character.y][character.x] = 0;
+    grid[character.y][character.x] = oldLocation;
     //move
     character.x++;
     //set new location
-    grid[character.y][character.x] = "player";
+    grid[character.y][character.x] = newLocation;
+  }
+  else if (character.direction === "L") {
+    //reset old location
+    grid[character.y][character.x] = oldLocation;
+    //move
+    character.x--;
+    //set new location
+    grid[character.y][character.x] = newLocation;
+  }
+  else if (character.direction === "U") {
+    //reset old location
+    grid[character.y][character.x] = oldLocation;
+    //move
+    character.y--;
+    //set new location
+    grid[character.y][character.x] = newLocation;
+  }
+  else if (character.direction === "D") {
+    //reset old location
+    grid[character.y][character.x] = oldLocation;
+    //move
+    character.y++;
+    //set new location
+    grid[character.y][character.x] = newLocation;
   }
 }
