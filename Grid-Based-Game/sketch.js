@@ -4,6 +4,8 @@
 //
 // Extra for Experts:
 // - create a special function for moving between areas.
+// - battle activation and JSON for map construct
+// credit to https://www.youtube.com/watch?v=yP5DKzriqXA for battle activation at 3:53:45
 
 // error checking
 // console.log(grid);
@@ -13,13 +15,17 @@
 const ROWS = 20;
 const COLS = 20;
 let grid;
+let state = "menuScreen";
 let cellWidth;
 let cellHeight;
 let character = {
   x:3,
   y:3,
   size:0,
-  direction: "R"
+  direction:"R",
+  level: 1,
+  maxHealthPoint: 100,
+  healthPoint: 100,
 };
 let start;
 let room1A;
@@ -38,11 +44,22 @@ let rock;
 let player;
 let yellow_dirt;
 let lair_stone;
+let goblin;
 let areaState = "start";
 let walkable = [0,3];
 let playerWalk = ["player","player2"];
+let enemies = ["goblin"];
+let foes;
+let batteBackgroundGrass;
+let overWorldMusic;
+let newgame;
+let startingScreen;
 
 function preload() {
+  //menu
+  newgame = loadImage("newgame.png");
+  startingScreen = loadImage("plainScene.png");
+  //overworld
   start = loadJSON("startA.json");
   room1A = loadJSON("room1A.json");
   room2A = loadJSON("room2A.json");
@@ -58,23 +75,42 @@ function preload() {
   lair_stone = loadImage("lair_1_old.png");
   player = loadImage("human_new.png");
   door = loadImage("entrance.png");
+  goblin = loadImage("goblin_new.png");
+  //battle
+  batteBackgroundGrass = loadImage("battleback1.png");
+  //music
+  overWorldMusic = loadSound("Woodland Fantasy.mp3");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
   cellWidth = width/COLS*0.7;
+  // state = "overWorld";
   if (areaState === "start") {
     grid = start;
   }
-  
   grid[character.y][character.x] = "player";
 }
 
 function draw() {
   background(220);
-  displayGrid(grid);
-  displayHUD();
+  if (state === "menuScreen") {
+    displayMenuscreen();
+    // escape menu in mousepress
+  }
+  if (state === "overWorld") {
+    displayGrid(grid);
+    displayHUD();
+  }
+  if (state === "battle") {
+    displayBattle(foes);
+  }
+}
+
+function displayMenuscreen() {
+  image(startingScreen,0,0,width,height);
+  image(newgame,width*0.4,height*0.4,300,100);
 }
 
 function create2dArray(COLS, ROWS) {
@@ -91,6 +127,10 @@ function create2dArray(COLS, ROWS) {
 function displayHUD() {
   fill(255);
   rect(width*0.7,0,width*0.3,height);
+  fill(0);
+  textSize(100);
+  text(character.level,width*0.90,height*0.1);
+  text("level",width*0.72,height*0.1);
 }
 
 function displayGrid(grid) {
@@ -128,6 +168,10 @@ function displayGrid(grid) {
         image(yellow_dirt,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
         image(player,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
       }
+      else if(grid[y][x]=== "goblin") {
+        image(grassTextures,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+        image(goblin,x*cellWidth,y*cellHeight,cellWidth,cellHeight);
+      }
     }
   }
 }
@@ -149,13 +193,12 @@ function createRandom2dArray(COLS, ROWS) {
 }
 
 function mousePressed() {
-  let x = Math.floor(mouseX/cellWidth);
-  let y = Math.floor(mouseY/cellHeight);
-  if (grid[y][x] === 0) {
-    grid[y][x] =1;
-  }
-  else if (grid[y][x] === 1) {
-    grid[y][x] =0;
+  // escape menuscreen
+  if (state === "menuScreen") {
+    if (mouseX >= width*0.4 && mouseX <=width*0.4 + 300 && mouseY >= height*0.4 && mouseY <=height*0.4 + 100) {
+      state = "overWorld";
+      //play music
+    }
   }
 }
 
@@ -191,6 +234,9 @@ function mouseDragged() {
   if (keyIsDown(55)) {
     grid[y][x] = "east";
   }
+  if (keyIsDown(56)) {
+    grid[y][x] = "goblin";
+  }
 }
 
 function keyPressed() {
@@ -198,8 +244,11 @@ function keyPressed() {
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
   }
-  moveMap();
-  setDirection();
+  if (state === "overWorld") {
+    moveMap();
+    setDirection();
+    fightEncounter();
+  }
 }
 
 // I don't know if create a function and put it in will still have the same effect.
@@ -358,11 +407,11 @@ function moveMap() {
 }
 
 function setDirection() {
+  let terrain;
   //Moving function
   if (key === "d") {
     character.direction = "R";
     let restraint = character.x +1;
-    let terrain;
     for (let i = 0; i <=1; i ++) {
       if (grid[character.y][character.x+1] === walkable[i]) {//next block is walakble
         //reset old location
@@ -389,6 +438,7 @@ function setDirection() {
   }
   if (key === "a") {
     character.direction = "L";
+    let restraint = character.x -1;
     for (let i = 0; i <=1; i ++) {
       if (grid[character.y][character.x-1] === walkable[i]) {
         //reset old location
@@ -399,12 +449,15 @@ function setDirection() {
           grid[character.y][character.x] = 3;
         }
         //move
-        character.x--;
+        if (restraint < character.x) {
+          character.x--;
+          terrain = walkable[i];
+        }
         //set new player location
-        if (walkable[i] === 0){
+        if (terrain === 0){
           grid[character.y][character.x] = "player";
         }
-        else if (walkable[i] === 3){
+        else if (terrain === 3){
           grid[character.y][character.x] = "player2";
         }
       }
@@ -412,6 +465,7 @@ function setDirection() {
   }
   if (key === "w" ) {
     character.direction = "U";
+    let restraint = character.y -1;
     for (let i = 0; i <=1; i ++) {
       if (grid[character.y-1][character.x]=== walkable[i]) {
         //reset old location
@@ -422,12 +476,15 @@ function setDirection() {
           grid[character.y][character.x] = 3;
         }
         //move
-        character.y--;
+        if (restraint < character.y) {
+          character.y--;
+          terrain = walkable[i];
+        }
         //set new player location
-        if (walkable[i] === 0){
+        if (terrain === 0){
           grid[character.y][character.x] = "player";
         }
-        else if (walkable[i] === 3){
+        else if (terrain === 3){
           grid[character.y][character.x] = "player2";
         }
       }
@@ -435,6 +492,7 @@ function setDirection() {
   }
   if (key === "s") {
     character.direction = "D";
+    let restraint = character.y +1;
     for (let i = 0; i <=1; i ++) {
       if (grid[character.y+1][character.x] === walkable[i]) {
         //reset old location
@@ -445,15 +503,64 @@ function setDirection() {
           grid[character.y][character.x] = 3;
         }
         //move
-        character.y++;
+        if (restraint > character.y) {
+          character.y++;
+          terrain = walkable[i];
+        }
         //set new player location
-        if (walkable[i] === 0){
+        if (terrain === 0){
           grid[character.y][character.x] = "player";
         }
-        else if (walkable[i] === 3){
+        else if (terrain === 3){
           grid[character.y][character.x] = "player2";
         }
       }
     }
   }
+}
+
+function fightEncounter() {
+  //set enemies and activate battle
+  for (let i = 0;i<enemies.length;i++) {
+    if (grid[character.y-1][character.x] === enemies[i]) {
+      foes = enemies[i];
+      gsap.to("#overlappingDiv", {opacity:1,repeat:3,yoyo:true,duration:0.4,onComplete() {
+        "#overlappingDiv", {opacity:1,duration:0.4};
+      }
+      });
+      setTimeout(changeToBattleScreen,1500);
+    }
+    else if (grid[character.y+1][character.x] === enemies[i]) {
+      foes = enemies[i];
+      gsap.to("#overlappingDiv", {opacity:1,repeat:3,yoyo:true,duration:0.4,onComplete() {
+        "#overlappingDiv", {opacity:1,duration:0.4};
+      }
+      });
+      setTimeout(changeToBattleScreen,1500);
+    }
+    else if (grid[character.y][character.x-1] === enemies[i]) {
+      foes = enemies[i];
+      gsap.to("#overlappingDiv", {opacity:1,repeat:3,yoyo:true,duration:0.4,onComplete() {
+        "#overlappingDiv", {opacity:1,duration:0.4};
+      }
+      });
+      setTimeout(changeToBattleScreen,1500);
+    }
+    else if (grid[character.y][character.x+1] === enemies[i]) {
+      foes = enemies[i];
+      gsap.to("#overlappingDiv", {opacity:1,repeat:3,yoyo:true,duration:0.4,onComplete() {
+        "#overlappingDiv", {opacity:1,duration:0.4};
+      }
+      });
+      setTimeout(changeToBattleScreen,1500);
+    }
+  }
+}
+
+function displayBattle() {
+  image(batteBackgroundGrass,0,0,width,height);
+}
+
+function changeToBattleScreen() {
+  state = "battle";
 }
