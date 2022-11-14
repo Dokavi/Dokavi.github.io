@@ -4,7 +4,7 @@
 //
 // Extra for Experts:
 // - create a special function for moving between areas.
-// - battle activation and JSON for map construct
+// - battle scene,JSON and map construct with brushes
 // credit to https://www.youtube.com/watch?v=yP5DKzriqXA for battle activation at 3:53:45
 
 // error checking
@@ -203,6 +203,11 @@ function mousePressed() {
       //play music
       overWorldMusic.play();
     }
+  }
+  if (state === "battle") {
+    dialogue("kill him");
+    state = "overWorld";
+    character.level++;
   }
 }
 
@@ -533,6 +538,7 @@ function fightEncounter() {
       }
       });
       setTimeout(changeToBattleScreen,1500);
+      grid[character.y-1][character.x] = 0;
     }
     else if (grid[character.y+1][character.x] === enemies[i]) {
       foes = enemies[i];
@@ -541,6 +547,7 @@ function fightEncounter() {
       }
       });
       setTimeout(changeToBattleScreen,1500);
+      grid[character.y+1][character.x] = 0;
     }
     else if (grid[character.y][character.x-1] === enemies[i]) {
       foes = enemies[i];
@@ -549,6 +556,7 @@ function fightEncounter() {
       }
       });
       setTimeout(changeToBattleScreen,1500);
+      grid[character.y][character.x-1] = 0;
     }
     else if (grid[character.y][character.x+1] === enemies[i]) {
       foes = enemies[i];
@@ -557,6 +565,7 @@ function fightEncounter() {
       }
       });
       setTimeout(changeToBattleScreen,1500);
+      grid[character.y][character.x+1] = 0;
     }
   }
 }
@@ -564,9 +573,16 @@ function fightEncounter() {
 function displayBattle() {
   image(batteBackgroundGrass,0,0,width,height);
   image(player,width*0.1783644558918223,height*0.5513307984790875,player.width*3,player.height*3);
-  image(goblin,width*0.7160334835801674,height*0.5766793409378961,goblin.width*2,goblin.height*2);
+  image(goblin,width*0.7160334835801674,height*0.5766793409378961,goblin.width*2,goblin.height*2 );
 }
 
-function changeToBattleScreen() {
+function changeToBattleScreen(enemyLocation) {
   state = "battle";
+  //delete enemy
+  enemyLocation = 0;
+}
+
+function dialogue(textbox) {
+  text(textbox,width/0.8,height/0.8);
+  textSize(100);
 }
