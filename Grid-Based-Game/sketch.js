@@ -193,11 +193,15 @@ function createRandom2dArray(COLS, ROWS) {
 }
 
 function mousePressed() {
+  // coordinate
+  console.log(mouseX/width);
+  console.log(mouseY/height);
   // escape menuscreen
   if (state === "menuScreen") {
     if (mouseX >= width*0.4 && mouseX <=width*0.4 + 300 && mouseY >= height*0.4 && mouseY <=height*0.4 + 100) {
       state = "overWorld";
       //play music
+      overWorldMusic.play();
     }
   }
 }
@@ -559,6 +563,8 @@ function fightEncounter() {
 
 function displayBattle() {
   image(batteBackgroundGrass,0,0,width,height);
+  image(player,width*0.1783644558918223,height*0.5513307984790875,player.width*3,player.height*3);
+  image(goblin,width*0.7160334835801674,height*0.5766793409378961,goblin.width*2,goblin.height*2);
 }
 
 function changeToBattleScreen() {
