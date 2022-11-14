@@ -27,8 +27,7 @@ let character = {
   maxHealthPoint: 100,
   healthPoint: 100,
 };
-let start;
-let room1A;
+let start, room1A;
 let room2A;
 let room3A;
 let room4A;
@@ -60,8 +59,7 @@ function preload() {
   newgame = loadImage("newgame.png");
   startingScreen = loadImage("plainScene.png");
   //overworld
-  start = loadJSON("startA.json");
-  room1A = loadJSON("room1A.json");
+  start = loadJSON("startA.json"), room1A = loadJSON("room1A.json");
   room2A = loadJSON("room2A.json");
   room3A = loadJSON("room3A.json");
   room4A = loadJSON("room4A.json");
