@@ -53,6 +53,7 @@ let batteBackgroundGrass;
 let overWorldMusic;
 let newgame;
 let startingScreen;
+let dialogue = "";
 
 function preload() {
   //menu
@@ -129,6 +130,7 @@ function displayHUD() {
   textSize(100);
   text(character.level,width*0.90,height*0.1);
   text("level",width*0.72,height*0.1);
+  text(dialogue,width*0.72,height*0.7);
 }
 
 function displayGrid(grid) {
@@ -203,7 +205,7 @@ function mousePressed() {
     }
   }
   if (state === "battle") {
-    dialogue("kill him");
+    dialogue = "kill him!";
     state = "overWorld";
     character.level++;
   }
@@ -402,6 +404,7 @@ function moveMap() {
       grid[character.y][character.x] = 0; //reset old location
       grid = create2dArray(COLS,ROWS);
       areaState = "room5A";
+      dialogue = "Continued...";
       // set character
       if (character.x === COLS-1) {
         //move to other side
@@ -578,9 +581,4 @@ function changeToBattleScreen(enemyLocation) {
   state = "battle";
   //delete enemy
   enemyLocation = 0;
-}
-
-function dialogue(textbox) {
-  text(textbox,width/0.8,height/0.8);
-  textSize(100);
 }
