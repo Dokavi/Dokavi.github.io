@@ -8,7 +8,7 @@
 class Bullet {
   constructor(x,y) {
     this.x = x;
-    this.y = y;
+    this.y = y+20;
     this.size =5;
     this.dx = 5;
   }
@@ -27,6 +27,11 @@ let person = {
   y:0
 };
 let bulletsCase = [];
+let characterImage;
+
+function preload() {
+  characterImage = loadImage("anubis_guard.png");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -35,12 +40,12 @@ function setup() {
 
 function draw() {
   background(220);
-  rect(person.x,person.y,50,50);
+  image(characterImage,person.x,person.y,50,50);
   for (let i = 0; i<bulletsCase.length;i++) {
     bulletsCase[i].move();
     bulletsCase[i].display();
     if (bulletsCase[i].isDead()) {
-      bulletsCase.Splice(i,1);
+      bulletsCase.splice(i,1);
     }
   }
 }
