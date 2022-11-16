@@ -30,6 +30,9 @@ class Particle {
     circle(this.x,this.y,this.radius*2);
   }
 
+  isDead() {
+    return this.alpha <= 0;
+  }
 }
 
 let theFireWorks = [];
@@ -42,7 +45,13 @@ function draw() {
   background(0);
   for (let i = 0; i< theFireWorks.length;i++) {
     theFireWorks[i].update();
-    theFireWorks[i].display();
+    if (theFireWorks[i].isDead()) {
+      //remove
+      theFireWorks.splice(i,1);
+    }
+    else {
+      theFireWorks[i].display();
+    }
   }
 }
 
