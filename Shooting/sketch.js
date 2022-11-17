@@ -9,14 +9,14 @@ class Bullet {
   constructor(x,y) {
     this.x = x;
     this.y = y+20;
-    this.size =5;
+    this.size = 0.8;
     this.dx = 5;
   }
   move() {
     this.x +=this.dx;
   }
   display() {
-    circle(this.x,this.y,this.size);
+    image(bulletImage,this.x,this.y,bulletImage.width*this.size,bulletImage.height*this.size);
   }
   isDead() {
     return this.x <=0 || this.x >= width;
@@ -28,9 +28,11 @@ let person = {
 };
 let bulletsCase = [];
 let characterImage;
+let bulletImage;
 
 function preload() {
   characterImage = loadImage("anubis_guard.png");
+  bulletImage = loadImage("arrow_2.png");
 }
 
 function setup() {
