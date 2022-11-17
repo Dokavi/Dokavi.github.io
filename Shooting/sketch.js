@@ -6,17 +6,18 @@
 // - describe what you did to take this project "above and beyond"
 
 class Bullet {
-  constructor(x,y) {
+  constructor(x,y,theImage) {
     this.x = x;
     this.y = y+20;
     this.size = 0.8;
     this.dx = 5;
+    this.img = theImage;
   }
   move() {
     this.x +=this.dx;
   }
   display() {
-    image(bulletImage,this.x,this.y,bulletImage.width*this.size,bulletImage.height*this.size);
+    image(this.img,this.x,this.y,this.img.width*this.size,this.img.height*this.size);
   }
   isDead() {
     return this.x <=0 || this.x >= width;
@@ -28,11 +29,11 @@ let person = {
 };
 let bulletsCase = [];
 let characterImage;
-let bulletImage;
+let arrow;
 
 function preload() {
   characterImage = loadImage("anubis_guard.png");
-  bulletImage = loadImage("arrow_2.png");
+  arrow = loadImage("arrow_2.png");
 }
 
 function setup() {
@@ -46,6 +47,8 @@ function draw() {
   for (let i = 0; i<bulletsCase.length;i++) {
     bulletsCase[i].move();
     bulletsCase[i].display();
+  }
+  for (let i = bulletsCase.length-1;i>=0;i--) {
     if (bulletsCase[i].isDead()) {
       bulletsCase.splice(i,1);
     }
@@ -53,6 +56,6 @@ function draw() {
 }
 
 function mousePressed() {
-  let bulletShot = new Bullet(person.x,person.y);
+  let bulletShot = new Bullet(person.x,person.y,arrow);
   bulletsCase.push(bulletShot);
 }
